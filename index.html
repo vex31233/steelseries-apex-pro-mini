@@ -1,1086 +1,615 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Apex Pro Mini — SteelSeries | World's Fastest Keyboard</title>
-  <meta name="description" content="The SteelSeries Apex Pro Mini — World's fastest keyboard with OmniPoint 2.0 HyperMagnetic switches. 20x faster actuation. Infinite customization. 60% form factor." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Archivo:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg: #000000;
-      --bg2: #080808;
-      --text: #ffffff;
-      --muted: rgba(255,255,255,0.55);
-      --card-bg: rgba(255,255,255,0.04);
-      --card-border: rgba(255,255,255,0.08);
-      --r1: #ff0055;
-      --r2: #ff6600;
-      --r3: #ffdd00;
-      --r4: #00ff88;
-      --r5: #00aaff;
-      --r6: #aa00ff;
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Apex Pro Mini — SteelSeries | World's Fastest Keyboard</title>
+<meta name="description" content="OmniPoint 2.0 HyperMagnetic switches. 20x faster actuation. 40 actuation levels. The world's most advanced gaming keyboard."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000;--bg1:#0a0a0c;--bg2:#0f0f12;--bg3:#141418;
+  --border:#1e1e24;--border2:#2a2a34;
+  --text:#f0f0f4;--muted:#5a5a6e;--muted2:#888899;
+  --cyan:#00e5ff;--orange:#ff5722;--purple:#7c3aed;
+  --mono:#4a9eff;
+}
+html{scroll-behavior:auto}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:#00e5ff22;color:#fff}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:#000}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#ff0055,#00e5ff,#aa00ff);border-radius:2px}
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+@keyframes rgb-shift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes draw{from{stroke-dashoffset:var(--len)}to{stroke-dashoffset:0}}
+@keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes scanline{from{transform:translateY(-100%)}to{transform:translateY(100vh)}}
 
-    html { scroll-behavior: auto; }
+/* ── LOADER ── */
+#loader{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s,visibility .5s}
+#loader.gone{opacity:0;visibility:hidden}
+.ld-brand{font-family:'Space Grotesk',sans-serif;font-size:.85rem;letter-spacing:.4em;color:var(--muted);margin-bottom:2rem;text-transform:uppercase}
+.ld-track{width:220px;height:2px;background:#111;position:relative}
+.ld-fill{height:100%;width:0%;background:linear-gradient(90deg,#ff0055,#00e5ff,#aa00ff);background-size:200%;animation:rgb-shift 1s ease infinite;transition:width .08s linear}
+.ld-pct{margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);letter-spacing:.1em}
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Archivo', sans-serif;
-      overflow-x: hidden;
-    }
+/* ── PROGRESS BAR ── */
+#prog{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,#ff0055,#ffdd00,#00ff88,#00e5ff,#aa00ff,#ff0055);background-size:300%;animation:rgb-shift 2s linear infinite;z-index:1000;pointer-events:none;transition:width .05s linear}
 
-    ::selection { background: #00aaff44; color: #fff; }
+/* ── NAVBAR ── */
+#nav{position:fixed;top:0;left:0;right:0;padding:20px 40px;display:flex;align-items:center;justify-content:space-between;z-index:900;transition:all .4s cubic-bezier(.16,1,.3,1)}
+#nav.scrolled{top:10px;left:50%;transform:translateX(-50%);width:min(800px,calc(100% - 32px));padding:0 24px;background:rgba(0,0,0,.85);backdrop-filter:blur(24px);border:1px solid var(--border2);border-radius:40px}
+.nav-in{display:flex;align-items:center;justify-content:space-between;width:100%;height:56px}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-icon{width:28px;height:28px;background:linear-gradient(135deg,#ff0055,#00e5ff);background-size:200%;animation:rgb-shift 3s ease infinite;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:.65rem;font-weight:700}
+.nav-name{font-family:'Space Grotesk',sans-serif;font-size:.82rem;font-weight:600;letter-spacing:.12em;color:var(--text)}
+.nav-links{display:flex;align-items:center;gap:24px;list-style:none}
+.nav-links a{font-size:.8rem;color:var(--muted2);text-decoration:none;letter-spacing:.04em;transition:color .2s}
+.nav-links a:hover{color:#fff}
+.nav-buy{background:linear-gradient(90deg,#ff0055,#00e5ff);background-size:200%;animation:rgb-shift 3s ease infinite;color:#fff!important;padding:7px 18px;border-radius:20px;font-weight:600;font-size:.78rem;transition:transform .2s,box-shadow .2s}
+.nav-buy:hover{transform:scale(1.04);box-shadow:0 0 20px #00e5ff44}
 
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #000; }
-    ::-webkit-scrollbar-thumb {
-      background: linear-gradient(180deg, var(--r1), var(--r3), var(--r4), var(--r5), var(--r6));
-      border-radius: 3px;
-    }
+/* ── HERO ── */
+#hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;overflow:hidden}
+.hero-dots{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.06) 1px,transparent 1px);background-size:32px 32px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%);pointer-events:none}
+.hero-line{position:absolute;top:0;left:50%;width:1px;height:100%;background:linear-gradient(180deg,transparent,rgba(0,229,255,.15),transparent);pointer-events:none}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.2em;color:var(--muted);border:1px solid var(--border2);padding:6px 16px;border-radius:4px;margin-bottom:2rem;animation:fadeUp .8s ease both}
+.hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);animation:pulse 2s ease infinite}
+.hero-h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(3.5rem,9vw,8rem);font-weight:700;line-height:.95;letter-spacing:-.03em;animation:fadeUp .8s .1s ease both}
+.hero-h1 em{font-style:normal;background:linear-gradient(90deg,#ff0055,#ffdd00,#00ff88,#00e5ff,#aa00ff,#ff0055);background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:rgb-shift 3s ease infinite}
+.hero-sub{max-width:500px;margin:1.5rem auto 2.5rem;font-size:1rem;color:var(--muted2);line-height:1.7;animation:fadeUp .8s .2s ease both}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s .3s ease both}
+.btn-p{padding:12px 32px;border-radius:6px;font-weight:600;font-size:.88rem;color:#fff;text-decoration:none;background:linear-gradient(90deg,#ff0055,#ff6600,#ffdd00,#00ff88,#00e5ff,#aa00ff,#ff0055);background-size:300%;animation:rgb-shift 2.5s ease infinite;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;letter-spacing:.03em}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,229,255,.3)}
+.btn-s{padding:11px 32px;border-radius:6px;font-weight:500;font-size:.88rem;color:var(--text);text-decoration:none;background:transparent;border:1px solid var(--border2);cursor:pointer;transition:all .2s;letter-spacing:.03em}
+.btn-s:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 20px rgba(0,229,255,.15)}
+.hero-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;animation:fadeUp .8s .6s ease both}
+.hint-txt{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.2em;color:rgba(255,255,255,.2)}
+.hint-bar{width:1px;height:32px;background:linear-gradient(180deg,rgba(255,255,255,.2),transparent);animation:float 2s ease infinite}
 
-    /* ─── Rainbow gradient keyframes ─── */
-    @keyframes rainbow-shift {
-      0%   { background-position: 0% 50%; }
-      50%  { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    @keyframes rgb-glow {
-      0%   { box-shadow: 0 0 20px #ff005566, 0 0 40px #ff005533; }
-      16%  { box-shadow: 0 0 20px #ff660066, 0 0 40px #ff660033; }
-      33%  { box-shadow: 0 0 20px #ffdd0066, 0 0 40px #ffdd0033; }
-      50%  { box-shadow: 0 0 20px #00ff8866, 0 0 40px #00ff8833; }
-      66%  { box-shadow: 0 0 20px #00aaff66, 0 0 40px #00aaff33; }
-      83%  { box-shadow: 0 0 20px #aa00ff66, 0 0 40px #aa00ff33; }
-      100% { box-shadow: 0 0 20px #ff005566, 0 0 40px #ff005533; }
-    }
-    @keyframes rgb-text {
-      0%   { color: #ff0055; text-shadow: 0 0 20px #ff005599; }
-      16%  { color: #ff6600; text-shadow: 0 0 20px #ff660099; }
-      33%  { color: #ffdd00; text-shadow: 0 0 20px #ffdd0099; }
-      50%  { color: #00ff88; text-shadow: 0 0 20px #00ff8899; }
-      66%  { color: #00aaff; text-shadow: 0 0 20px #00aaff99; }
-      83%  { color: #aa00ff; text-shadow: 0 0 20px #aa00ff99; }
-      100% { color: #ff0055; text-shadow: 0 0 20px #ff005599; }
-    }
-    @keyframes rgb-border {
-      0%   { border-color: #ff0055; }
-      16%  { border-color: #ff6600; }
-      33%  { border-color: #ffdd00; }
-      50%  { border-color: #00ff88; }
-      66%  { border-color: #00aaff; }
-      83%  { border-color: #aa00ff; }
-      100% { border-color: #ff0055; }
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-12px); }
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes pulse-ring {
-      0%   { transform: scale(1); opacity: 0.6; }
-      100% { transform: scale(1.4); opacity: 0; }
-    }
-    @keyframes spin-slow {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.2; }
-      50% { opacity: 1; }
-    }
+/* ── SCROLL SECTION ── */
+#scroll-section{position:relative;height:400vh;z-index:1}
+.scroll-sticky{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#svid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;will-change:transform}
+.vid-grad{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.8) 100%);pointer-events:none}
+.vid-bot{position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(transparent,#000);pointer-events:none}
+.ann{position:absolute;max-width:260px;opacity:0;transform:translateY(12px);transition:opacity .35s ease,transform .35s ease;pointer-events:none}
+.ann.on{opacity:1;transform:translateY(0)}
+.ann-inner{background:rgba(0,0,0,.8);border:1px solid var(--border2);border-radius:8px;padding:16px 20px;backdrop-filter:blur(20px)}
+.ann-n{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.2em;color:var(--cyan);margin-bottom:4px}
+.ann-t{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.9rem;color:#fff;margin-bottom:4px}
+.ann-d{font-size:.75rem;color:var(--muted2);line-height:1.5}
+.ann-v{margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--cyan)}
+.ann1{top:18%;left:4%}.ann2{top:15%;right:4%}.ann3{bottom:22%;left:4%}.ann4{bottom:22%;right:4%}
 
-    /* ─── Scroll Progress Bar ─── */
-    #scroll-progress {
-      position: fixed;
-      top: 0; left: 0;
-      height: 3px;
-      width: 0%;
-      background: linear-gradient(90deg, var(--r1), var(--r3), var(--r4), var(--r5), var(--r6), var(--r1));
-      background-size: 300% 100%;
-      animation: rainbow-shift 2s ease infinite;
-      z-index: 9999;
-      transition: width 0.05s linear;
-    }
+/* ── SECTION SHARED ── */
+.s-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.3em;color:var(--cyan);text-transform:uppercase;margin-bottom:.75rem}
+.s-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,3.5vw,3rem);font-weight:700;letter-spacing:-.02em;line-height:1.1}
+.s-sub{font-size:.9rem;color:var(--muted2);line-height:1.7;max-width:480px}
 
-    /* ─── Loader ─── */
-    #loader {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
-    }
-    #loader.hidden { opacity: 0; visibility: hidden; }
-    .loader-logo {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.4rem;
-      font-weight: 700;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      animation: rgb-text 2s linear infinite;
-      margin-bottom: 2rem;
-    }
-    .loader-bar-track {
-      width: 260px;
-      height: 3px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-    .loader-bar-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--r1), var(--r3), var(--r4), var(--r5), var(--r6));
-      background-size: 300% 100%;
-      animation: rainbow-shift 1s ease infinite;
-      transition: width 0.05s linear;
-      border-radius: 2px;
-    }
-    .loader-text {
-      margin-top: 1rem;
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      color: var(--muted);
-      font-family: 'JetBrains Mono', monospace;
-    }
+/* ── ACTUATION CHART ── */
+#chart-section{padding:100px 0;background:var(--bg1);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.chart-wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+.chart-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;gap:24px;flex-wrap:wrap}
+.chart-legend{display:flex;gap:20px;flex-wrap:wrap}
+.leg-item{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted2)}
+.leg-line{width:24px;height:2px;border-radius:1px}
+.chart-container{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:32px;position:relative;overflow:hidden}
+.chart-container::before{content:'';position:absolute;top:-1px;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--purple));opacity:.6}
+#actuation-svg{width:100%;display:block}
+.chart-controls{margin-top:24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.ctrl-label{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted2)}
+.ctrl-group{display:flex;align-items:center;gap:12px}
+#ap-slider{-webkit-appearance:none;appearance:none;width:200px;height:3px;border-radius:2px;background:var(--border2);outline:none;cursor:pointer}
+#ap-slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--cyan);border:2px solid #000;box-shadow:0 0 8px var(--cyan);cursor:pointer}
+#ap-val{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--cyan);min-width:50px}
+.chart-note{margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted);line-height:1.6}
 
-    /* ─── Starscape ─── */
-    #starscape {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
+/* ── RAPID TRIGGER ── */
+#rt-section{padding:100px 40px;max-width:1200px;margin:0 auto}
+.rt-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px}
+.rt-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:32px;position:relative;overflow:hidden}
+.rt-card-title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1rem;margin-bottom:6px}
+.rt-card-sub{font-size:.8rem;color:var(--muted2);margin-bottom:28px}
+.rt-viz{position:relative;height:80px;background:var(--bg3);border-radius:6px;overflow:hidden;border:1px solid var(--border)}
+.rt-track{position:absolute;top:50%;left:0;right:0;height:2px;background:var(--border2);transform:translateY(-50%)}
+.rt-key{position:absolute;top:50%;height:48px;border-radius:4px;transform:translateY(-50%);transition:left .8s ease,width .8s ease}
+.rt-act{position:absolute;top:4px;height:calc(100% - 8px);background:rgba(255,87,34,.12);border:1px dashed rgba(255,87,34,.4);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.6rem;color:#ff5722;letter-spacing:.1em;transition:left .8s ease,width .8s ease}
+.rt-line-act{position:absolute;top:0;bottom:0;width:2px;background:#ff5722}
+.rt-line-reset{position:absolute;top:0;bottom:0;width:2px;background:#444}
+.rt-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.65rem;margin-top:16px}
+.rt-badge.bad{background:rgba(255,87,34,.1);border:1px solid rgba(255,87,34,.3);color:#ff5722}
+.rt-badge.good{background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.3);color:var(--cyan)}
+.rt-animate-btn{position:absolute;top:16px;right:16px;background:transparent;border:1px solid var(--border2);border-radius:6px;padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted2);cursor:pointer;transition:all .2s}
+.rt-animate-btn:hover{border-color:var(--cyan);color:var(--cyan)}
 
-    /* ─── Navbar ─── */
-    #navbar {
-      position: fixed;
-      top: 16px;
-      left: 0; right: 0;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 40px;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    #navbar.scrolled {
-      top: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: min(820px, calc(100% - 32px));
-      padding: 0 24px;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(20px);
-      border-radius: 50px;
-      border: 1px solid rgba(255,255,255,0.08);
-      animation: rgb-border 3s linear infinite;
-    }
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      height: 60px;
-    }
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-    }
-    .nav-logo-mark {
-      width: 32px; height: 32px;
-      background: linear-gradient(135deg, var(--r1), var(--r5));
-      background-size: 200% 200%;
-      animation: rainbow-shift 2s ease infinite;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 0.8rem;
-    }
-    .nav-brand-text {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 0.9rem;
-      letter-spacing: 0.1em;
-      color: var(--text);
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-      list-style: none;
-    }
-    .nav-links a {
-      font-size: 0.82rem;
-      color: var(--muted);
-      text-decoration: none;
-      letter-spacing: 0.05em;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: #fff; }
-    .nav-cta {
-      background: linear-gradient(90deg, var(--r1), var(--r5));
-      background-size: 200% 100%;
-      animation: rainbow-shift 3s ease infinite;
-      color: #fff !important;
-      padding: 8px 20px;
-      border-radius: 50px;
-      font-weight: 600;
-      font-size: 0.82rem;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .nav-cta:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px rgba(0,170,255,0.4);
-    }
+/* ── DASHBOARD ── */
+#dashboard{padding:80px 40px;background:var(--bg1);border-top:1px solid var(--border)}
+.dash-inner{max-width:1200px;margin:0 auto}
+.dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:48px;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.dash-card{background:var(--bg2);padding:32px 24px;position:relative}
+.dash-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0;transition:opacity .3s}
+.dash-card:hover::after{opacity:1}
+.dash-label{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-bottom:12px}
+.dash-val{font-family:'Space Grotesk',sans-serif;font-size:2.8rem;font-weight:700;line-height:1;margin-bottom:4px}
+.dash-val .unit{font-size:1.2rem;color:var(--muted2)}
+.dash-desc{font-size:.78rem;color:var(--muted2);line-height:1.5}
+.dash-bar{margin-top:16px;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.dash-bar-fill{height:100%;border-radius:2px;width:0%;transition:width 1.2s cubic-bezier(0,0,.2,1)}
 
-    /* ─── Hero ─── */
-    #hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 120px 24px 80px;
-      z-index: 1;
-      overflow: hidden;
-    }
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.25em;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-      animation: fadeUp 0.8s ease both;
-    }
-    .hero-eyebrow-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--r4), var(--r5));
-      animation: rgb-glow 3s linear infinite;
-    }
-    .hero-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(3rem, 8vw, 7rem);
-      font-weight: 700;
-      line-height: 1.0;
-      letter-spacing: -0.02em;
-      animation: fadeUp 0.8s 0.1s ease both;
-    }
-    .hero-title .line2 {
-      display: block;
-      animation: rgb-text 3s linear infinite;
-    }
-    .hero-sub {
-      max-width: 560px;
-      font-size: 1.1rem;
-      color: var(--muted);
-      line-height: 1.7;
-      margin: 1.5rem auto 2.5rem;
-      animation: fadeUp 0.8s 0.2s ease both;
-    }
-    .hero-buttons {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-      animation: fadeUp 0.8s 0.3s ease both;
-    }
-    .btn-primary {
-      position: relative;
-      padding: 14px 36px;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      letter-spacing: 0.05em;
-      color: #fff;
-      text-decoration: none;
-      background: linear-gradient(90deg, var(--r1), var(--r2), var(--r3), var(--r4), var(--r5), var(--r6), var(--r1));
-      background-size: 300% 100%;
-      animation: rainbow-shift 2s ease infinite;
-      border: none;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .btn-primary:hover {
-      transform: scale(1.04);
-      box-shadow: 0 0 30px rgba(0,170,255,0.5);
-    }
-    .btn-secondary {
-      padding: 13px 36px;
-      border-radius: 50px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: var(--text);
-      text-decoration: none;
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.2);
-      cursor: pointer;
-      transition: all 0.2s;
-      animation: rgb-border 4s linear infinite;
-    }
-    .btn-secondary:hover {
-      background: rgba(255,255,255,0.05);
-      animation: rgb-glow 2s linear infinite, rgb-border 2s linear infinite;
-    }
-    .hero-scroll-hint {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      animation: fadeUp 0.8s 0.6s ease both;
-    }
-    .scroll-hint-text {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      color: rgba(255,255,255,0.3);
-      text-transform: uppercase;
-    }
-    .scroll-hint-line {
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.3), transparent);
-      animation: float 2s ease-in-out infinite;
-    }
+/* ── FEATURES ── */
+#features{padding:80px 40px;max-width:1200px;margin:0 auto}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:48px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.feat-card{background:var(--bg1);padding:32px 28px;transition:background .2s}
+.feat-card:hover{background:var(--bg2)}
+.feat-icon{font-size:1.3rem;margin-bottom:14px;display:block}
+.feat-name{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.95rem;margin-bottom:8px}
+.feat-desc{font-size:.8rem;color:var(--muted2);line-height:1.6}
+.feat-chip{display:inline-block;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.12em;color:var(--cyan);border:1px solid rgba(0,229,255,.25);padding:3px 10px;border-radius:3px}
 
-    /* Orbs */
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      pointer-events: none;
-    }
-    .orb-1 {
-      width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(255,0,85,0.15), transparent 70%);
-      top: -100px; left: -150px;
-      animation: float 8s ease-in-out infinite;
-    }
-    .orb-2 {
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(0,170,255,0.15), transparent 70%);
-      bottom: -50px; right: -100px;
-      animation: float 10s ease-in-out infinite reverse;
-    }
-    .orb-3 {
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(170,0,255,0.12), transparent 70%);
-      top: 40%; right: 20%;
-      animation: float 12s ease-in-out infinite 2s;
-    }
+/* ── RGB SECTION ── */
+#rgb-section{padding:80px 40px;background:var(--bg1);border-top:1px solid var(--border);text-align:center}
+.rgb-inner{max-width:700px;margin:0 auto}
+.rgb-keys{display:flex;justify-content:center;gap:4px;margin:40px 0;flex-wrap:wrap}
+.rgb-key{width:36px;height:36px;border-radius:6px;background:var(--bg3);border:1px solid var(--border);position:relative;overflow:hidden;cursor:pointer;transition:transform .1s}
+.rgb-key:hover{transform:scale(1.1)}
+.rgb-key-glow{position:absolute;inset:0;border-radius:5px;opacity:.8}
+@keyframes key-cycle{0%{background:#ff0055}16%{background:#ff6600}33%{background:#ffdd00}50%{background:#00ff88}66%{background:#00aaff}83%{background:#aa00ff}100%{background:#ff0055}}
+.rgb-key-glow{animation:key-cycle 3s linear infinite}
+.rgb-key:nth-child(2) .rgb-key-glow{animation-delay:-.2s}
+.rgb-key:nth-child(3) .rgb-key-glow{animation-delay:-.4s}
+.rgb-key:nth-child(4) .rgb-key-glow{animation-delay:-.6s}
+.rgb-key:nth-child(5) .rgb-key-glow{animation-delay:-.8s}
+.rgb-key:nth-child(6) .rgb-key-glow{animation-delay:-1s}
+.rgb-key:nth-child(7) .rgb-key-glow{animation-delay:-1.2s}
+.rgb-key:nth-child(8) .rgb-key-glow{animation-delay:-1.4s}
+.rgb-key:nth-child(9) .rgb-key-glow{animation-delay:-1.6s}
+.rgb-key:nth-child(10) .rgb-key-glow{animation-delay:-1.8s}
+.rgb-key:nth-child(11) .rgb-key-glow{animation-delay:-2s}
+.rgb-key:nth-child(12) .rgb-key-glow{animation-delay:-2.2s}
+.rgb-key:nth-child(13) .rgb-key-glow{animation-delay:-2.4s}
+.rgb-key:nth-child(14) .rgb-key-glow{animation-delay:-2.6s}
 
-    /* Grid overlay */
-    .grid-overlay {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
-    }
+/* ── CTA ── */
+#cta{padding:120px 40px;text-align:center;border-top:1px solid var(--border)}
+.cta-price{font-family:'JetBrains Mono',monospace;font-size:3rem;font-weight:700;color:var(--cyan);margin:1.5rem 0}
+.cta-note{font-size:.8rem;color:var(--muted);margin-top:.5rem}
 
-    /* ─── Scroll Animation Section ─── */
-    #scroll-animation {
-      position: relative;
-      height: 400vh;
-      z-index: 1;
-    }
-    .scroll-sticky {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-    #scroll-video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      position: absolute;
-      inset: 0;
-    }
-    .scroll-video-overlay {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.7) 100%);
-      pointer-events: none;
-    }
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:48px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.foot-brand{font-family:'Space Grotesk',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.15em;color:var(--muted)}
+.foot-links{display:flex;gap:20px;list-style:none}
+.foot-links a{font-size:.78rem;color:var(--muted);text-decoration:none;transition:color .2s}
+.foot-links a:hover{color:#fff}
+.foot-copy{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:rgba(255,255,255,.2)}
 
-    /* Annotation cards */
-    .annotation {
-      position: absolute;
-      background: rgba(0,0,0,0.75);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 16px;
-      padding: 20px 24px;
-      max-width: 300px;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-      pointer-events: none;
-      animation: rgb-border 4s linear infinite;
-    }
-    .annotation.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .annotation-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      animation: rgb-text 3s linear infinite;
-      margin-bottom: 6px;
-    }
-    .annotation-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 1rem;
-      color: #fff;
-      margin-bottom: 6px;
-    }
-    .annotation-desc {
-      font-size: 0.8rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-    .annotation-stat {
-      margin-top: 10px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1.4rem;
-      font-weight: 700;
-      animation: rgb-text 3s linear infinite;
-    }
-
-    .ann-1 { top: 20%; left: 5%; }
-    .ann-2 { top: 15%; right: 5%; }
-    .ann-3 { bottom: 20%; left: 5%; }
-    .ann-4 { bottom: 20%; right: 5%; }
-
-    /* ─── Stats Section ─── */
-    #specs {
-      position: relative;
-      z-index: 1;
-      padding: 120px 24px;
-      text-align: center;
-      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,10,20,0.5) 100%);
-    }
-    .section-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.3em;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-    }
-    .section-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      font-weight: 700;
-      margin-bottom: 3rem;
-    }
-    .section-title .accent { animation: rgb-text 3s linear infinite; }
-    .specs-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2px;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-    .spec-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      padding: 40px 24px;
-      text-align: center;
-      transition: all 0.3s ease;
-    }
-    .spec-card:first-child { border-radius: 20px 0 0 20px; }
-    .spec-card:last-child { border-radius: 0 20px 20px 0; }
-    .spec-card:hover {
-      background: rgba(255,255,255,0.07);
-      animation: rgb-glow 2s linear infinite;
-    }
-    .spec-num {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      font-weight: 700;
-      animation: rgb-text 3s linear infinite;
-      line-height: 1;
-    }
-    .spec-suffix {
-      font-size: 1.5rem;
-      animation: rgb-text 3s linear infinite;
-    }
-    .spec-label {
-      font-size: 0.82rem;
-      color: var(--muted);
-      margin-top: 8px;
-      line-height: 1.4;
-    }
-
-    /* ─── Features ─── */
-    #features {
-      position: relative;
-      z-index: 1;
-      padding: 80px 24px 120px;
-    }
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .feature-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 32px 28px;
-      backdrop-filter: blur(20px);
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .feature-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 20px;
-      padding: 1px;
-      background: linear-gradient(135deg, var(--r1), var(--r3), var(--r5), var(--r6));
-      background-size: 300% 300%;
-      animation: rainbow-shift 4s ease infinite;
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .feature-card:hover::before { opacity: 1; }
-    .feature-card:hover {
-      background: rgba(255,255,255,0.06);
-      transform: translateY(-4px);
-    }
-    .feature-icon {
-      width: 48px; height: 48px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      margin-bottom: 16px;
-      background: linear-gradient(135deg, rgba(255,0,85,0.2), rgba(0,170,255,0.2));
-      border: 1px solid rgba(255,255,255,0.08);
-      animation: rgb-glow 4s linear infinite;
-    }
-    .feature-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-    .feature-desc {
-      font-size: 0.85rem;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-    .feature-tag {
-      display: inline-block;
-      margin-top: 14px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      padding: 4px 12px;
-      border-radius: 50px;
-      border: 1px solid rgba(255,255,255,0.12);
-      color: var(--muted);
-      animation: rgb-border 4s linear infinite;
-    }
-
-    /* ─── CTA ─── */
-    #cta {
-      position: relative;
-      z-index: 1;
-      padding: 120px 24px;
-      text-align: center;
-      overflow: hidden;
-    }
-    .cta-ring {
-      position: absolute;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.06);
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      animation: spin-slow 30s linear infinite;
-    }
-    .cta-ring-1 { width: 500px; height: 500px; animation-duration: 25s; }
-    .cta-ring-2 { width: 700px; height: 700px; animation-direction: reverse; animation-duration: 35s; }
-    .cta-ring-3 { width: 900px; height: 900px; animation-duration: 45s; }
-    .cta-inner { position: relative; z-index: 1; }
-    .cta-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2.5rem, 6vw, 5rem);
-      font-weight: 700;
-      line-height: 1.1;
-      margin-bottom: 1.5rem;
-    }
-    .cta-title .rainbow-word { animation: rgb-text 3s linear infinite; }
-    .cta-sub {
-      font-size: 1.05rem;
-      color: var(--muted);
-      max-width: 500px;
-      margin: 0 auto 2.5rem;
-      line-height: 1.7;
-    }
-    .cta-price {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 2rem;
-      font-weight: 700;
-      animation: rgb-text 3s linear infinite;
-      margin-bottom: 1.5rem;
-    }
-
-    /* ─── Footer ─── */
-    footer {
-      position: relative;
-      z-index: 1;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 60px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 24px;
-    }
-    .footer-brand {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 1rem;
-      letter-spacing: 0.1em;
-      animation: rgb-text 4s linear infinite;
-    }
-    .footer-links {
-      display: flex;
-      gap: 24px;
-      list-style: none;
-    }
-    .footer-links a {
-      font-size: 0.82rem;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .footer-links a:hover { color: #fff; }
-    .footer-copy {
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.25);
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    /* ─── Responsive ─── */
-    @media (max-width: 768px) {
-      .specs-grid { grid-template-columns: repeat(2, 1fr); }
-      .spec-card:first-child { border-radius: 20px 0 0 0; }
-      .spec-card:last-child { border-radius: 0 0 20px 0; }
-      .spec-card:nth-child(2) { border-radius: 0 20px 0 0; }
-      .spec-card:nth-child(3) { border-radius: 0 0 0 20px; }
-      .features-grid { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
-      .ann-1, .ann-2, .ann-3, .ann-4 {
-        max-width: 160px;
-        padding: 12px 14px;
-      }
-      .annotation-desc { display: none; }
-      .ann-1 { top: auto; bottom: 12%; left: 4%; }
-      .ann-2 { top: auto; bottom: 12%; right: 4%; }
-      .ann-3 { display: none; }
-      .ann-4 { display: none; }
-      footer { flex-direction: column; align-items: flex-start; }
-    }
-  </style>
+@media(max-width:768px){
+  .rt-grid{grid-template-columns:1fr}
+  .dash-grid{grid-template-columns:repeat(2,1fr)}
+  .feat-grid{grid-template-columns:1fr}
+  .ann1,.ann2,.ann3,.ann4{max-width:160px}
+  .ann3,.ann4{display:none}
+  footer{flex-direction:column;align-items:flex-start}
+  .nav-links{display:none}
+  .chart-wrap{padding:0 16px}
+}
+</style>
 </head>
 <body>
-
 <!-- Loader -->
 <div id="loader">
-  <div class="loader-logo">SteelSeries</div>
-  <div class="loader-bar-track">
-    <div class="loader-bar-fill" id="loader-bar"></div>
-  </div>
-  <div class="loader-text" id="loader-text">Initializing...</div>
+  <div class="ld-brand">SteelSeries</div>
+  <div class="ld-track"><div class="ld-fill" id="ldf"></div></div>
+  <div class="ld-pct" id="ldp">0%</div>
 </div>
 
-<!-- Scroll Progress -->
-<div id="scroll-progress"></div>
+<div id="prog"></div>
 
-<!-- Starscape Canvas -->
-<canvas id="starscape"></canvas>
-
-<!-- Navbar -->
-<nav id="navbar">
-  <div class="nav-inner">
-    <a href="#" class="nav-brand">
-      <div class="nav-logo-mark">SS</div>
-      <span class="nav-brand-text">STEELSERIES</span>
+<!-- Nav -->
+<nav id="nav">
+  <div class="nav-in">
+    <a href="#" class="nav-logo">
+      <div class="nav-icon">SS</div>
+      <span class="nav-name">STEELSERIES</span>
     </a>
     <ul class="nav-links">
-      <li><a href="#specs">Specs</a></li>
+      <li><a href="#chart-section">Actuation</a></li>
+      <li><a href="#rt-section">Rapid Trigger</a></li>
       <li><a href="#features">Features</a></li>
-      <li><a href="https://steelseries.com/gaming-keyboards" target="_blank">All Keyboards</a></li>
-      <li><a href="https://steelseries.com/gaming-keyboards/apex-pro-mini" target="_blank" class="nav-cta">Buy Now</a></li>
+      <li><a href="https://steelseries.com/gaming-keyboards/apex-pro-mini" target="_blank" class="nav-buy">Buy Now</a></li>
     </ul>
   </div>
 </nav>
 
 <!-- Hero -->
 <section id="hero">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-  <div class="grid-overlay"></div>
-
-  <div class="hero-eyebrow">
-    <span class="hero-eyebrow-dot"></span>
-    World's Fastest Gaming Keyboard
-    <span class="hero-eyebrow-dot"></span>
+  <div class="hero-dots"></div>
+  <div class="hero-line"></div>
+  <div class="hero-tag"><span class="hero-tag-dot"></span> World's Fastest Gaming Keyboard <span class="hero-tag-dot"></span></div>
+  <h1 class="hero-h1">Apex Pro<br><em>Mini</em></h1>
+  <p class="hero-sub">OmniPoint 2.0 HyperMagnetic switches. 20× faster actuation. 40 levels of per-key precision in a 60% form factor.</p>
+  <div class="hero-btns">
+    <a href="https://steelseries.com/gaming-keyboards/apex-pro-mini" target="_blank" class="btn-p" id="hero-buy">Buy Now — $179.99</a>
+    <a href="#scroll-section" class="btn-s" id="hero-explore">Explore</a>
   </div>
-
-  <h1 class="hero-title">
-    Apex Pro
-    <span class="line2">Mini</span>
-  </h1>
-
-  <p class="hero-sub">
-    OmniPoint 2.0 HyperMagnetic switches. 20x faster actuation.
-    40 levels of per-key customization. 60% form factor. Full-size domination.
-  </p>
-
-  <div class="hero-buttons">
-    <a href="https://steelseries.com/gaming-keyboards/apex-pro-mini" target="_blank" class="btn-primary" id="hero-buy-btn">Buy Now — $179.99</a>
-    <a href="#scroll-animation" class="btn-secondary" id="hero-explore-btn">Explore It</a>
-  </div>
-
-  <div class="hero-scroll-hint">
-    <span class="scroll-hint-text">Scroll to explore</span>
-    <div class="scroll-hint-line"></div>
-  </div>
+  <div class="hero-hint"><span class="hint-txt">Scroll to explore</span><div class="hint-bar"></div></div>
 </section>
 
-<!-- Scroll Animation Section -->
-<section id="scroll-animation">
+<!-- Scroll Video -->
+<section id="scroll-section">
   <div class="scroll-sticky">
-    <video id="scroll-video" muted playsinline preload="auto" src="video/apex-pro.mp4"></video>
-    <div class="scroll-video-overlay"></div>
-
-    <div class="annotation ann-1" id="ann-1" data-show="0.05" data-hide="0.3">
-      <div class="annotation-num">01 / SWITCHES</div>
-      <div class="annotation-title">OmniPoint 2.0</div>
-      <div class="annotation-desc">HyperMagnetic sensors. Zero contact. Instant activation.</div>
-      <div class="annotation-stat">0.1mm</div>
+    <video id="svid" muted playsinline preload="auto" src="video/apex-pro.mp4"></video>
+    <div class="vid-grad"></div>
+    <div class="vid-bot"></div>
+    <div class="ann ann1" id="a1" data-s="0.05" data-h="0.3">
+      <div class="ann-inner">
+        <div class="ann-n">01 / SWITCHES</div>
+        <div class="ann-t">OmniPoint 2.0</div>
+        <div class="ann-d">HyperMagnetic sensors. Zero contact. Instant registration.</div>
+        <div class="ann-v">0.1<span style="font-size:.7rem;color:var(--muted2)">mm</span></div>
+      </div>
     </div>
-
-    <div class="annotation ann-2" id="ann-2" data-show="0.28" data-hide="0.55">
-      <div class="annotation-num">02 / SPEED</div>
-      <div class="annotation-title">Rapid Trigger</div>
-      <div class="annotation-desc">Dynamic activation eliminates latency from physical movement.</div>
-      <div class="annotation-stat">20x</div>
+    <div class="ann ann2" id="a2" data-s="0.28" data-h="0.55">
+      <div class="ann-inner">
+        <div class="ann-n">02 / SPEED</div>
+        <div class="ann-t">20× Faster</div>
+        <div class="ann-d">Versus traditional mechanical keyboards. No debounce delay.</div>
+        <div class="ann-v">0.1<span style="font-size:.7rem;color:var(--muted2)">ms</span></div>
+      </div>
     </div>
-
-    <div class="annotation ann-3" id="ann-3" data-show="0.53" data-hide="0.78">
-      <div class="annotation-num">03 / CONTROL</div>
-      <div class="annotation-title">40 Actuation Levels</div>
-      <div class="annotation-desc">Per-key precision from 0.1mm to 4.0mm. Yours to configure.</div>
-      <div class="annotation-stat">×40</div>
+    <div class="ann ann3" id="a3" data-s="0.53" data-h="0.78">
+      <div class="ann-inner">
+        <div class="ann-n">03 / CONTROL</div>
+        <div class="ann-t">40 Actuation Levels</div>
+        <div class="ann-d">Per-key precision from 0.1mm to 4.0mm.</div>
+        <div class="ann-v">×40</div>
+      </div>
     </div>
-
-    <div class="annotation ann-4" id="ann-4" data-show="0.76" data-hide="1.0">
-      <div class="annotation-num">04 / BUILD</div>
-      <div class="annotation-title">Aircraft Aluminum</div>
-      <div class="annotation-desc">Series 5000 alloy top plate. The same grade used in jets.</div>
-      <div class="annotation-stat">60%</div>
+    <div class="ann ann4" id="a4" data-s="0.76" data-h="1.0">
+      <div class="ann-inner">
+        <div class="ann-n">04 / BUILD</div>
+        <div class="ann-t">Aircraft Aluminum</div>
+        <div class="ann-d">Series 5000 alloy. Same grade used in jet construction.</div>
+        <div class="ann-v">60<span style="font-size:.7rem;color:var(--muted2)">%</span></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- Stats/Specs -->
-<section id="specs">
-  <div class="section-label">By the numbers</div>
-  <h2 class="section-title">Built for <span class="accent">Dominance</span></h2>
-  <div class="specs-grid">
-    <div class="spec-card" data-target="20" data-suffix="x">
-      <div class="spec-num"><span class="count">0</span><span class="spec-suffix">x</span></div>
-      <div class="spec-label">Faster Actuation<br>than mechanical</div>
+<!-- Actuation Chart -->
+<section id="chart-section">
+  <div class="chart-wrap">
+    <div class="chart-header">
+      <div>
+        <div class="s-label">Switch Technology</div>
+        <h2 class="s-title">Actuation Curve<br>Comparison</h2>
+        <p class="s-sub" style="margin-top:.75rem">Real force-travel profiles across switch types. Drag the slider to adjust OmniPoint 2.0 actuation point.</p>
+      </div>
+      <div class="chart-legend">
+        <div class="leg-item"><div class="leg-line" style="background:var(--cyan);box-shadow:0 0 6px var(--cyan)"></div>OmniPoint 2.0</div>
+        <div class="leg-item"><div class="leg-line" style="background:var(--orange)"></div>MX Red (linear)</div>
+        <div class="leg-item"><div class="leg-line" style="background:var(--purple)"></div>MX Blue (clicky)</div>
+      </div>
     </div>
-    <div class="spec-card" data-target="11" data-suffix="x">
-      <div class="spec-num"><span class="count">0</span><span class="spec-suffix">x</span></div>
-      <div class="spec-label">Faster Response<br>Time</div>
+    <div class="chart-container">
+      <svg id="actuation-svg" viewBox="0 0 800 280" preserveAspectRatio="none"></svg>
+      <div class="chart-controls">
+        <div class="ctrl-group">
+          <span class="ctrl-label">OmniPoint actuation:</span>
+          <input type="range" id="ap-slider" min="1" max="40" value="8" step="1"/>
+          <span id="ap-val" class="ctrl-label">0.8mm</span>
+        </div>
+        <div class="ctrl-group">
+          <span class="ctrl-label" style="color:var(--cyan)">■ Rapid Trigger zone</span>
+          <span class="ctrl-label">adjusts dynamically</span>
+        </div>
+      </div>
+      <div class="chart-note">
+        * Force values are approximate and normalized for comparison. OmniPoint 2.0 maintains consistent actuation regardless of travel depth.
+        MX Blue shows tactile bump at 1.8mm before actuation click at 2.0mm. Traditional reset point is fixed 0.5mm above actuation.
+      </div>
     </div>
-    <div class="spec-card" data-target="40" data-suffix="">
-      <div class="spec-num"><span class="count">0</span><span class="spec-suffix"> lvl</span></div>
-      <div class="spec-label">Actuation Points<br>Per Key</div>
+  </div>
+</section>
+
+<!-- Rapid Trigger -->
+<section id="rt-section">
+  <div class="s-label">Performance Tech</div>
+  <h2 class="s-title">Rapid Trigger</h2>
+  <p class="s-sub" style="margin-top:.75rem">Eliminate the dead zone. Traditional keyboards have a fixed reset point — Apex Pro Mini's resets instantly.</p>
+  <div class="rt-grid">
+    <div class="rt-card">
+      <button class="rt-animate-btn" onclick="animateRT()">▶ Animate</button>
+      <div class="rt-card-title">Traditional Mechanical</div>
+      <div class="rt-card-sub">Fixed actuation + fixed reset. ~0.5mm dead zone on every keystroke.</div>
+      <div class="rt-viz" id="rt-trad">
+        <div class="rt-track"></div>
+        <div class="rt-act" id="trad-dz" style="left:45%;width:12%;font-size:.55rem">DEAD ZONE</div>
+        <div style="position:absolute;top:50%;left:10%;width:38%;height:28px;background:var(--border2);border-radius:3px;transform:translateY(-50%)" id="trad-key"></div>
+        <div class="rt-line-act" style="left:48%"></div>
+        <div class="rt-line-reset" style="left:57%"></div>
+      </div>
+      <div class="rt-badge bad">⚠ 0.5mm fixed dead zone — unavoidable latency</div>
     </div>
-    <div class="spec-card" data-target="100" data-suffix="">
-      <div class="spec-num"><span class="count">0</span><span class="spec-suffix">M+</span></div>
-      <div class="spec-label">Keystroke<br>Durability</div>
+    <div class="rt-card" style="border-color:rgba(0,229,255,.2)">
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)"></div>
+      <div class="rt-card-title">Apex Pro Mini — Rapid Trigger</div>
+      <div class="rt-card-sub">Dynamic actuation + instant reset. Zero dead zone. Every millimeter matters.</div>
+      <div class="rt-viz" id="rt-apex">
+        <div class="rt-track"></div>
+        <div style="position:absolute;top:50%;left:10%;width:38%;height:28px;background:rgba(0,229,255,.15);border:1px solid rgba(0,229,255,.3);border-radius:3px;transform:translateY(-50%)" id="apex-key"></div>
+        <div class="rt-line-act" style="left:48%;background:var(--cyan);box-shadow:0 0 6px var(--cyan)"></div>
+        <div class="rt-line-reset" style="left:48.5%;background:var(--cyan);opacity:.5"></div>
+      </div>
+      <div class="rt-badge good">✓ Dynamic reset — ~0mm dead zone</div>
+    </div>
+  </div>
+</section>
+
+<!-- Dashboard Stats -->
+<section id="dashboard">
+  <div class="dash-inner">
+    <div class="s-label">Performance Data</div>
+    <h2 class="s-title">By the Numbers</h2>
+    <div class="dash-grid" id="dash-grid">
+      <div class="dash-card" data-target="20" data-max="20" data-color="#00e5ff">
+        <div class="dash-label">Actuation Speed</div>
+        <div class="dash-val"><span class="cnt">0</span><span class="unit">×</span></div>
+        <div class="dash-desc">Faster than conventional mechanical keyboards</div>
+        <div class="dash-bar"><div class="dash-bar-fill" style="background:var(--cyan)"></div></div>
+      </div>
+      <div class="dash-card" data-target="11" data-max="11" data-color="#ff5722">
+        <div class="dash-label">Response Time</div>
+        <div class="dash-val"><span class="cnt">0</span><span class="unit">×</span></div>
+        <div class="dash-desc">Faster response vs traditional actuation</div>
+        <div class="dash-bar"><div class="dash-bar-fill" style="background:var(--orange)"></div></div>
+      </div>
+      <div class="dash-card" data-target="40" data-max="40" data-color="#7c3aed">
+        <div class="dash-label">Actuation Levels</div>
+        <div class="dash-val"><span class="cnt">0</span><span class="unit"> pts</span></div>
+        <div class="dash-desc">Per-key adjustment precision (0.1–4.0mm)</div>
+        <div class="dash-bar"><div class="dash-bar-fill" style="background:var(--purple)"></div></div>
+      </div>
+      <div class="dash-card" data-target="100" data-max="100" data-color="#00ff88">
+        <div class="dash-label">Durability</div>
+        <div class="dash-val"><span class="cnt">0</span><span class="unit">M+</span></div>
+        <div class="dash-desc">Keystroke lifespan. No contact = no wear.</div>
+        <div class="dash-bar"><div class="dash-bar-fill" style="background:#00ff88"></div></div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- Features -->
 <section id="features">
-  <div style="text-align:center; margin-bottom: 3rem;">
-    <div class="section-label">What's inside</div>
-    <h2 class="section-title">Every Detail <span class="accent">Engineered</span></h2>
+  <div class="s-label">What's Inside</div>
+  <h2 class="s-title">Every Detail Engineered</h2>
+  <div class="feat-grid" style="margin-top:48px">
+    <div class="feat-card"><span class="feat-icon">⚡</span><div class="feat-name">Rapid Trigger</div><div class="feat-desc">Keys activate and deactivate based on directional movement, not fixed points. Eliminates input latency at the hardware level.</div><span class="feat-chip">ZERO DEAD ZONE</span></div>
+    <div class="feat-card"><span class="feat-icon">🎮</span><div class="feat-name">2-in-1 Action Keys</div><div class="feat-desc">One key, two actions. Light press walks, deep press sprints. Program any key with dual-depth inputs via SteelSeries GG.</div><span class="feat-chip">DUAL DEPTH INPUT</span></div>
+    <div class="feat-card"><span class="feat-icon">🔧</span><div class="feat-name">Per-Key Actuation</div><div class="feat-desc">40 levels from 0.1mm to 4.0mm per individual key. WASD set to feather-light, ability keys set deep — or any configuration you choose.</div><span class="feat-chip">PER-KEY CONTROL</span></div>
+    <div class="feat-card"><span class="feat-icon">🌈</span><div class="feat-name">Per-Key RGB</div><div class="feat-desc">16.8M colors per key. Prism Connect reactive lighting syncs with your game. Program effects, profiles, and reactive patterns.</div><span class="feat-chip">16.8M COLORS</span></div>
+    <div class="feat-card"><span class="feat-icon">🏗️</span><div class="feat-name">Aircraft Aluminum</div><div class="feat-desc">Series 5000 alloy top plate — identical to aerospace-grade aluminum used in jet manufacturing. Built to last a lifetime.</div><span class="feat-chip">SERIES 5000 ALLOY</span></div>
+    <div class="feat-card"><span class="feat-icon">🔌</span><div class="feat-name">Detachable USB-C</div><div class="feat-desc">Braided detachable cable with USB-A passthrough. Clean desk, clean setup — no fumbling behind your PC ever again.</div><span class="feat-chip">BRAIDED CABLE</span></div>
   </div>
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-icon">⚡</div>
-      <div class="feature-title">Rapid Trigger</div>
-      <div class="feature-desc">Eradicate actuation latency. Keys activate and deactivate based on travel distance, not a fixed point — giving you a decisive edge in competitive play.</div>
-      <span class="feature-tag">ZERO LATENCY</span>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🎮</div>
-      <div class="feature-title">2-in-1 Action Keys</div>
-      <div class="feature-desc">Program two different actions to the same key. Walk forward with a light touch, sprint with a deeper press. One key, infinite tactical possibilities.</div>
-      <span class="feature-tag">DUAL ACTION</span>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🔧</div>
-      <div class="feature-title">Ultimate Adjustability</div>
-      <div class="feature-desc">Tune every key's actuation point to the nearest 0.1mm. Set WASD to ultra-light for blazing movement, ability keys to deep to prevent misfires.</div>
-      <span class="feature-tag">PER-KEY CONTROL</span>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🌈</div>
-      <div class="feature-title">Per-Key RGB Lighting</div>
-      <div class="feature-desc">Full per-key RGB illumination with 16.8M colors. Create stunning lighting effects and reactive patterns. Powered by SteelSeries Engine software.</div>
-      <span class="feature-tag">16.8M COLORS</span>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🏗️</div>
-      <div class="feature-title">Aircraft Aluminum Build</div>
-      <div class="feature-desc">Series 5000 aluminum alloy — identical to what's used in jet construction. Premium feel, structural rigidity, and a lifetime of endurance.</div>
-      <span class="feature-tag">SERIES 5000 ALLOY</span>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🔌</div>
-      <div class="feature-title">Detachable USB-C</div>
-      <div class="feature-desc">Clean desk, clean cable management. The detachable braided USB-C cable snaps in securely and releases in seconds. USB-A passthrough included.</div>
-      <span class="feature-tag">BRAIDED CABLE</span>
+</section>
+
+<!-- RGB -->
+<section id="rgb-section">
+  <div class="rgb-inner">
+    <div class="s-label">Per-Key RGB</div>
+    <h2 class="s-title">Prism Connect<br>Reactive Lighting</h2>
+    <p class="s-sub" style="margin:1rem auto 0">Sync your lighting with 300+ games. Create custom effects, reactive profiles, and color shifts per individual key.</p>
+    <div class="rgb-keys">
+      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
+      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
+      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
+      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
+      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
+      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
+      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
+      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
+      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
+      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
+      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
+      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
+      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
+      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
 <section id="cta">
-  <div class="cta-ring cta-ring-1"></div>
-  <div class="cta-ring cta-ring-2"></div>
-  <div class="cta-ring cta-ring-3"></div>
-  <div class="cta-inner">
-    <div class="section-label">Ready to dominate</div>
-    <h2 class="cta-title">Own the <span class="rainbow-word">Game</span></h2>
-    <p class="cta-sub">The Apex Pro Mini isn't just a keyboard — it's a competitive weapon. Built for those who refuse to lose.</p>
-    <div class="cta-price">$179.99</div>
-    <div class="hero-buttons">
-      <a href="https://steelseries.com/gaming-keyboards/apex-pro-mini" target="_blank" class="btn-primary" id="cta-buy-btn">Order Now</a>
-      <a href="https://steelseries.com/gg" target="_blank" class="btn-secondary" id="cta-software-btn">Get SteelSeries GG</a>
-    </div>
+  <div class="s-label">Ready</div>
+  <h2 class="s-title" style="max-width:600px;margin:0 auto">The Most Advanced<br>Keyboard Ever Built</h2>
+  <div class="cta-price">$179.99</div>
+  <div class="cta-note">Free shipping · 2-year warranty · SteelSeries GG software included</div>
+  <div class="hero-btns" style="margin-top:2rem">
+    <a href="https://steelseries.com/gaming-keyboards/apex-pro-mini" target="_blank" class="btn-p" id="cta-buy">Order Now</a>
+    <a href="https://steelseries.com/gg" target="_blank" class="btn-s" id="cta-gg">Get SteelSeries GG</a>
   </div>
 </section>
 
-<!-- Footer -->
 <footer>
-  <div class="footer-brand">STEELSERIES</div>
-  <ul class="footer-links">
+  <div class="foot-brand">STEELSERIES</div>
+  <ul class="foot-links">
     <li><a href="https://steelseries.com/gaming-keyboards" target="_blank">Keyboards</a></li>
     <li><a href="https://support.steelseries.com" target="_blank">Support</a></li>
     <li><a href="https://steelseries.com/gg" target="_blank">Software</a></li>
-    <li><a href="https://steelseries.com/esports" target="_blank">Esports</a></li>
   </ul>
-  <div class="footer-copy">© 2024 SteelSeries ApS. All rights reserved.</div>
+  <div class="foot-copy">© 2024 SteelSeries ApS. All rights reserved.</div>
 </footer>
 
 <script>
-  // ─── Starscape ───
-  const canvas = document.getElementById('starscape');
-  const ctx = canvas.getContext('2d');
-  let stars = [];
+// ─── LOADER ───────────────────────────────────────────
+const loader=document.getElementById('loader'),ldf=document.getElementById('ldf'),ldp=document.getElementById('ldp');
+let lp=0;
+const li=setInterval(()=>{
+  lp+=Math.random()*12+4;if(lp>100)lp=100;
+  ldf.style.width=lp+'%';ldp.textContent=Math.floor(lp)+'%';
+  if(lp>=100){clearInterval(li);setTimeout(()=>loader.classList.add('gone'),300);}
+},100);
 
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+// ─── SMOOTH VIDEO SCRUB (LERP) ─────────────────────────
+const vid=document.getElementById('svid');
+const sec=document.getElementById('scroll-section');
+const anns=document.querySelectorAll('.ann');
+let targetT=0,smoothT=0,lastSY=0,rafQ=false;
+
+function lerp(a,b,t){return a+(b-a)*t;}
+
+function scrubRAF(){
+  smoothT=lerp(smoothT,targetT,0.09);
+  if(vid.readyState>=2&&vid.duration){
+    const diff=Math.abs(smoothT-vid.currentTime);
+    if(diff>0.008)vid.currentTime=smoothT;
   }
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
+  // annotations
+  const secTop=sec.offsetTop,secH=sec.offsetHeight-window.innerHeight;
+  const prog=secH>0?Math.max(0,Math.min(1,(lastSY-secTop)/secH)):0;
+  anns.forEach(a=>{
+    const s=parseFloat(a.dataset.s),h=parseFloat(a.dataset.h);
+    a.classList.toggle('on',prog>=s&&prog<h);
+  });
+  requestAnimationFrame(scrubRAF);
+}
+scrubRAF();
 
-  const STAR_COLORS = ['#ff005588','#ff660088','#ffdd0088','#00ff8888','#00aaff88','#aa00ff88','#ffffff66'];
+// ─── SCROLL HANDLER ────────────────────────────────────
+const prog=document.getElementById('prog'),nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{
+  lastSY=window.scrollY;
+  const dh=document.documentElement.scrollHeight-window.innerHeight;
+  prog.style.width=(lastSY/dh*100)+'%';
+  nav.classList.toggle('scrolled',lastSY>60);
+  const secTop=sec.offsetTop,secH=sec.offsetHeight-window.innerHeight;
+  if(secH>0&&lastSY>=secTop)targetT=Math.max(0,Math.min(1,(lastSY-secTop)/secH))*(vid.duration||1);
+  else if(lastSY<secTop)targetT=0;
+},{passive:true});
 
-  function initStars() {
-    stars = [];
-    for (let i = 0; i < 180; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        r: Math.random() * 1.2 + 0.2,
-        color: STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)],
-        speed: Math.random() * 0.3 + 0.05,
-        twinkleSpeed: Math.random() * 0.02 + 0.005,
-        twinklePhase: Math.random() * Math.PI * 2,
-        dx: (Math.random() - 0.5) * 0.2,
-        dy: (Math.random() - 0.5) * 0.2,
-      });
+// ─── ACTUATION CHART ───────────────────────────────────
+const SVG_W=800,SVG_H=280,PAD={l:48,r:20,t:20,b:40};
+const CW=SVG_W-PAD.l-PAD.r,CH=SVG_H-PAD.t-PAD.b;
+const MAX_TRAVEL=4.0,MAX_FORCE=90;
+
+function tx(mm){return PAD.l+(mm/MAX_TRAVEL)*CW;}
+function ty(f){return PAD.t+CH-(f/MAX_FORCE)*CH;}
+
+// Switch data [travel_mm, force_g]
+const OP_pts=[[0,44],[0.5,44],[1,44],[1.5,44],[2,44],[2.5,44],[3,44],[3.5,44],[4,45]];
+const MXR_pts=[[0,30],[0.5,33],[1,36],[1.5,40],[2,45],[2.5,52],[3,60],[3.5,68],[4,75]];
+const MXB_pts=[[0,28],[0.5,32],[1,37],[1.5,42],[1.8,58],[2,52],[2.5,57],[3,63],[3.5,70],[4,77]];
+
+function pts2path(pts){return pts.map((p,i)=>`${i?'L':'M'}${tx(p[0]).toFixed(1)},${ty(p[1]).toFixed(1)}`).join(' ')+' L'+tx(4)+','+ty(0)+'L'+tx(0)+','+(PAD.t+CH)+'Z';}
+function pts2line(pts){return pts.map((p,i)=>`${i?'L':'M'}${tx(p[0]).toFixed(1)},${ty(p[1]).toFixed(1)}`).join(' ');}
+
+function makeChart(apMM){
+  const svg=document.getElementById('actuation-svg');
+  let html='';
+
+  // Grid
+  for(let i=0;i<=4;i++){const x=tx(i);html+=`<line x1="${x}" y1="${PAD.t}" x2="${x}" y2="${PAD.t+CH}" stroke="#1e1e24" stroke-width="1"/><text x="${x}" y="${SVG_H-6}" text-anchor="middle" font-size="9" fill="#5a5a6e" font-family="JetBrains Mono,monospace">${i}.0</text>`;}
+  for(let i=0;i<=MAX_FORCE;i+=20){const y=ty(i);html+=`<line x1="${PAD.l}" y1="${y}" x2="${PAD.l+CW}" y2="${y}" stroke="#1e1e24" stroke-width="1"/><text x="${PAD.l-6}" y="${y+3}" text-anchor="end" font-size="9" fill="#5a5a6e" font-family="JetBrains Mono,monospace">${i}g</text>`;}
+  html+=`<text x="${PAD.l+CW/2}" y="${SVG_H}" text-anchor="middle" font-size="9" fill="#5a5a6e" font-family="JetBrains Mono,monospace">Key Travel (mm)</text>`;
+
+  // MX Blue fill
+  html+=`<path d="${pts2path(MXB_pts)}" fill="${'#7c3aed'}11" stroke="none"/>`;
+  // MX Red fill
+  html+=`<path d="${pts2path(MXR_pts)}" fill="${'#ff5722'}0a" stroke="none"/>`;
+
+  // Lines
+  const opLine=pts2line(OP_pts);
+  const mxrLine=pts2line(MXR_pts);
+  const mxbLine=pts2line(MXB_pts);
+
+  html+=`<path d="${mxbLine}" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity=".85"/>`;
+  html+=`<path d="${mxrLine}" fill="none" stroke="#ff5722" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity=".85"/>`;
+  html+=`<path d="${opLine}" fill="none" stroke="#00e5ff" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" filter="url(#glow)"/>`;
+
+  // Dead zones: MX Red reset at 1.5mm (0.5mm before 2mm actuation)
+  const dzX=tx(1.5),actX=tx(2.0);
+  html+=`<rect x="${dzX}" y="${PAD.t}" width="${actX-dzX}" height="${CH}" fill="rgba(255,87,34,0.08)" rx="2"/>`;
+  html+=`<text x="${(dzX+actX)/2}" y="${PAD.t+14}" text-anchor="middle" font-size="8" fill="#ff5722" font-family="JetBrains Mono,monospace" opacity=".7">dead zone</text>`;
+
+  // Actuation markers
+  html+=`<line x1="${actX}" y1="${PAD.t}" x2="${actX}" y2="${PAD.t+CH}" stroke="#ff5722" stroke-width="1" stroke-dasharray="4,3" opacity=".6"/>`;
+  html+=`<line x1="${tx(1.8)}" y1="${PAD.t}" x2="${tx(1.8)}" y2="${PAD.t+CH}" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3" opacity=".5"/>`;
+
+  // OmniPoint actuation marker (adjustable)
+  const apX=tx(apMM);
+  html+=`<line x1="${apX}" y1="${PAD.t}" x2="${apX}" y2="${PAD.t+CH}" stroke="#00e5ff" stroke-width="1.5" stroke-dasharray="5,3"/>`;
+  html+=`<rect x="${apX-1}" y="${PAD.t}" width="${CW-(apX-PAD.l)}" height="${CH}" fill="rgba(0,229,255,0.05)" rx="2"/>`;
+  html+=`<text x="${apX+4}" y="${PAD.t+14}" font-size="8" fill="#00e5ff" font-family="JetBrains Mono,monospace">▲ AP ${apMM.toFixed(1)}mm</text>`;
+
+  // Glow filter
+  html=`<defs><filter id="glow"><feGaussianBlur in="SourceGraphic" stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`+html;
+
+  // Axes
+  html+=`<line x1="${PAD.l}" y1="${PAD.t}" x2="${PAD.l}" y2="${PAD.t+CH}" stroke="#2a2a34" stroke-width="1.5"/>`;
+  html+=`<line x1="${PAD.l}" y1="${PAD.t+CH}" x2="${PAD.l+CW}" y2="${PAD.t+CH}" stroke="#2a2a34" stroke-width="1.5"/>`;
+
+  svg.innerHTML=html;
+}
+
+const slider=document.getElementById('ap-slider'),apVal=document.getElementById('ap-val');
+slider.addEventListener('input',()=>{
+  const v=parseInt(slider.value)/10;
+  apVal.textContent=v.toFixed(1)+'mm';
+  makeChart(v);
+});
+makeChart(0.8);
+
+// ─── RAPID TRIGGER ANIMATION ───────────────────────────
+let rtPlaying=false;
+function animateRT(){
+  if(rtPlaying)return;rtPlaying=true;
+  const tradKey=document.getElementById('trad-key');
+  const apexKey=document.getElementById('apex-key');
+  const frames=[
+    ()=>{tradKey.style.left='50%';apexKey.style.left='50%';},
+    ()=>{tradKey.style.left='30%';apexKey.style.left='30%';},
+    ()=>{tradKey.style.left='10%';apexKey.style.left='10%';},
+    ()=>{tradKey.style.left='20%';apexKey.style.left='11%';},
+    ()=>{tradKey.style.left='10%';apexKey.style.left='10%';},
+    ()=>{tradKey.style.left='50%';apexKey.style.left='50%';rtPlaying=false;},
+  ];
+  frames.forEach((f,i)=>setTimeout(f,i*700));
+}
+
+// ─── COUNT UP ─────────────────────────────────────────
+function easeOut(t){return 1-Math.pow(2,-10*t);}
+function countUp(el,target,duration=1600){
+  const start=performance.now();
+  (function step(now){
+    const t=Math.min((now-start)/duration,1);
+    el.textContent=Math.floor(easeOut(t)*target);
+    if(t<1)requestAnimationFrame(step);else el.textContent=target;
+  })(start);
+}
+
+const dashCards=document.querySelectorAll('.dash-card');
+const io=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      const card=e.target,target=+card.dataset.target,max=+card.dataset.max;
+      const cntEl=card.querySelector('.cnt');
+      const barEl=card.querySelector('.dash-bar-fill');
+      setTimeout(()=>{
+        countUp(cntEl,target);
+        barEl.style.width=((target/max)*100)+'%';
+      },i*150);
+      io.unobserve(card);
     }
-  }
-  initStars();
-
-  function drawStars(t) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (const s of stars) {
-      const twinkle = 0.3 + 0.7 * ((Math.sin(t * s.twinkleSpeed + s.twinklePhase) + 1) / 2);
-      ctx.globalAlpha = twinkle;
-      ctx.fillStyle = s.color;
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fill();
-      s.x += s.dx;
-      s.y += s.dy;
-      if (s.x < 0) s.x = canvas.width;
-      if (s.x > canvas.width) s.x = 0;
-      if (s.y < 0) s.y = canvas.height;
-      if (s.y > canvas.height) s.y = 0;
-    }
-    ctx.globalAlpha = 1;
-    requestAnimationFrame(drawStars);
-  }
-  requestAnimationFrame(drawStars);
-
-  // ─── Loader ───
-  const loader = document.getElementById('loader');
-  const loaderBar = document.getElementById('loader-bar');
-  const loaderText = document.getElementById('loader-text');
-  const video = document.getElementById('scroll-video');
-  const messages = ['Loading assets...', 'Calibrating switches...', 'Charging RGB...', 'Ready.'];
-
-  let loadProgress = 0;
-  const loadInterval = setInterval(() => {
-    loadProgress += Math.random() * 15 + 5;
-    if (loadProgress > 100) loadProgress = 100;
-    loaderBar.style.width = loadProgress + '%';
-    loaderText.textContent = messages[Math.floor((loadProgress / 100) * (messages.length - 1))];
-    if (loadProgress >= 100) {
-      clearInterval(loadInterval);
-      setTimeout(() => loader.classList.add('hidden'), 300);
-    }
-  }, 120);
-
-  // ─── Navbar scroll ───
-  const navbar = document.getElementById('navbar');
-  const scrollBar = document.getElementById('scroll-progress');
-
-  // ─── Video scroll scrubbing ───
-  const scrollSection = document.getElementById('scroll-animation');
-  const annotations = document.querySelectorAll('.annotation');
-
-  let rafPending = false;
-  let lastScrollY = 0;
-
-  window.addEventListener('scroll', () => { lastScrollY = window.scrollY; if (!rafPending) { rafPending = true; requestAnimationFrame(onScroll); }}, { passive: true });
-
-  function onScroll() {
-    rafPending = false;
-    const scrolled = lastScrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const scrollFrac = docHeight > 0 ? scrolled / docHeight : 0;
-
-    // Progress bar
-    scrollBar.style.width = (scrollFrac * 100) + '%';
-
-    // Navbar
-    if (scrolled > 60) navbar.classList.add('scrolled');
-    else navbar.classList.remove('scrolled');
-
-    // Video scrubbing
-    const secTop = scrollSection.offsetTop;
-    const secHeight = scrollSection.offsetHeight - window.innerHeight;
-    if (secHeight > 0 && scrolled >= secTop && scrolled <= secTop + secHeight) {
-      const progress = (scrolled - secTop) / secHeight;
-      if (video.readyState >= 1 && video.duration) {
-        video.currentTime = progress * video.duration;
-      }
-      // Annotation visibility
-      annotations.forEach(ann => {
-        const show = parseFloat(ann.dataset.show);
-        const hide = parseFloat(ann.dataset.hide);
-        if (progress >= show && progress < hide) ann.classList.add('visible');
-        else ann.classList.remove('visible');
-      });
-    } else if (scrolled < secTop) {
-      if (video.readyState >= 1) video.currentTime = 0;
-      annotations.forEach(a => a.classList.remove('visible'));
-    }
-  }
-
-  // ─── Count-up ───
-  function easeOutExpo(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
-
-  function animateCount(el, target) {
-    const start = performance.now();
-    const duration = 1800;
-    function step(now) {
-      const t = Math.min((now - start) / duration, 1);
-      el.textContent = Math.floor(easeOutExpo(t) * target);
-      if (t < 1) requestAnimationFrame(step);
-      else el.textContent = target;
-    }
-    requestAnimationFrame(step);
-  }
-
-  const specCards = document.querySelectorAll('.spec-card');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        const target = parseInt(entry.target.dataset.target);
-        const countEl = entry.target.querySelector('.count');
-        setTimeout(() => animateCount(countEl, target), i * 200);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.4 });
-
-  specCards.forEach(c => observer.observe(c));
+  });
+},{threshold:.4});
+dashCards.forEach(c=>io.observe(c));
 </script>
 </body>
 </html>
