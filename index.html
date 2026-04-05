@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apex Pro Mini — SteelSeries | World's Fastest Keyboard</title>
+  <meta name="description" content="The SteelSeries Apex Pro Mini — World's fastest keyboard with OmniPoint 2.0 HyperMagnetic switches. 20x faster actuation. Infinite customization. 60% form factor." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Archivo:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #000000;
+      --bg2: #080808;
+      --text: #ffffff;
+      --muted: rgba(255,255,255,0.55);
+      --card-bg: rgba(255,255,255,0.04);
+      --card-border: rgba(255,255,255,0.08);
+      --r1: #ff0055;
+      --r2: #ff6600;
+      --r3: #ffdd00;
+      --r4: #00ff88;
+      --r5: #00aaff;
+      --r6: #aa00ff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: auto; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Archivo', sans-serif;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: #00aaff44; color: #fff; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #000; }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, var(--r1), var(--r3), var(--r4), var(--r5), var(--r6));
+      border-radius: 3px;
+    }
+
+    /* ─── Rainbow gradient keyframes ─── */
+    @keyframes rainbow-shift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes rgb-glow {
+      0%   { box-shadow: 0 0 20px #ff005566, 0 0 40px #ff005533; }
+      16%  { box-shadow: 0 0 20px #ff660066, 0 0 40px #ff660033; }
+      33%  { box-shadow: 0 0 20px #ffdd0066, 0 0 40px #ffdd0033; }
+      50%  { box-shadow: 0 0 20px #00ff8866, 0 0 40px #00ff8833; }
+      66%  { box-shadow: 0 0 20px #00aaff66, 0 0 40px #00aaff33; }
+      83%  { box-shadow: 0 0 20px #aa00ff66, 0 0 40px #aa00ff33; }
+      100% { box-shadow: 0 0 20px #ff005566, 0 0 40px #ff005533; }
+    }
+    @keyframes rgb-text {
+      0%   { color: #ff0055; text-shadow: 0 0 20px #ff005599; }
+      16%  { color: #ff6600; text-shadow: 0 0 20px #ff660099; }
+      33%  { color: #ffdd00; text-shadow: 0 0 20px #ffdd0099; }
+      50%  { color: #00ff88; text-shadow: 0 0 20px #00ff8899; }
+      66%  { color: #00aaff; text-shadow: 0 0 20px #00aaff99; }
+      83%  { color: #aa00ff; text-shadow: 0 0 20px #aa00ff99; }
+      100% { color: #ff0055; text-shadow: 0 0 20px #ff005599; }
+    }
+    @keyframes rgb-border {
+      0%   { border-color: #ff0055; }
+      16%  { border-color: #ff6600; }
+      33%  { border-color: #ffdd00; }
+      50%  { border-color: #00ff88; }
+      66%  { border-color: #00aaff; }
+      83%  { border-color: #aa00ff; }
+      100% { border-color: #ff0055; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse-ring {
+      0%   { transform: scale(1); opacity: 0.6; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+
+    /* ─── Scroll Progress Bar ─── */
+    #scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--r1), var(--r3), var(--r4), var(--r5), var(--r6), var(--r1));
+      background-size: 300% 100%;
+      animation: rainbow-shift 2s ease infinite;
+      z-index: 9999;
+      transition: width 0.05s linear;
+    }
+
+    /* ─── Loader ─── */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    #loader.hidden { opacity: 0; visibility: hidden; }
+    .loader-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      animation: rgb-text 2s linear infinite;
+      margin-bottom: 2rem;
+    }
+    .loader-bar-track {
+      width: 260px;
+      height: 3px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .loader-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--r1), var(--r3), var(--r4), var(--r5), var(--r6));
+      background-size: 300% 100%;
+      animation: rainbow-shift 1s ease infinite;
+      transition: width 0.05s linear;
+      border-radius: 2px;
+    }
+    .loader-text {
+      margin-top: 1rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ─── Starscape ─── */
+    #starscape {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── Navbar ─── */
+    #navbar {
+      position: fixed;
+      top: 16px;
+      left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #navbar.scrolled {
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(820px, calc(100% - 32px));
+      padding: 0 24px;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(20px);
+      border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.08);
+      animation: rgb-border 3s linear infinite;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 60px;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo-mark {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, var(--r1), var(--r5));
+      background-size: 200% 200%;
+      animation: rainbow-shift 2s ease infinite;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+    .nav-brand-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      color: var(--text);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta {
+      background: linear-gradient(90deg, var(--r1), var(--r5));
+      background-size: 200% 100%;
+      animation: rainbow-shift 3s ease infinite;
+      color: #fff !important;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.82rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .nav-cta:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(0,170,255,0.4);
+    }
+
+    /* ─── Hero ─── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero-eyebrow-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--r4), var(--r5));
+      animation: rgb-glow 3s linear infinite;
+    }
+    .hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 700;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+    .hero-title .line2 {
+      display: block;
+      animation: rgb-text 3s linear infinite;
+    }
+    .hero-sub {
+      max-width: 560px;
+      font-size: 1.1rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin: 1.5rem auto 2.5rem;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+    .btn-primary {
+      position: relative;
+      padding: 14px 36px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      color: #fff;
+      text-decoration: none;
+      background: linear-gradient(90deg, var(--r1), var(--r2), var(--r3), var(--r4), var(--r5), var(--r6), var(--r1));
+      background-size: 300% 100%;
+      animation: rainbow-shift 2s ease infinite;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      transform: scale(1.04);
+      box-shadow: 0 0 30px rgba(0,170,255,0.5);
+    }
+    .btn-secondary {
+      padding: 13px 36px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text);
+      text-decoration: none;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.2);
+      cursor: pointer;
+      transition: all 0.2s;
+      animation: rgb-border 4s linear infinite;
+    }
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.05);
+      animation: rgb-glow 2s linear infinite, rgb-border 2s linear infinite;
+    }
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      animation: fadeUp 0.8s 0.6s ease both;
+    }
+    .scroll-hint-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.3);
+      text-transform: uppercase;
+    }
+    .scroll-hint-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.3), transparent);
+      animation: float 2s ease-in-out infinite;
+    }
+
+    /* Orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+    .orb-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(255,0,85,0.15), transparent 70%);
+      top: -100px; left: -150px;
+      animation: float 8s ease-in-out infinite;
+    }
+    .orb-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(0,170,255,0.15), transparent 70%);
+      bottom: -50px; right: -100px;
+      animation: float 10s ease-in-out infinite reverse;
+    }
+    .orb-3 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(170,0,255,0.12), transparent 70%);
+      top: 40%; right: 20%;
+      animation: float 12s ease-in-out infinite 2s;
+    }
+
+    /* Grid overlay */
+    .grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    /* ─── Scroll Animation Section ─── */
+    #scroll-animation {
+      position: relative;
+      height: 400vh;
+      z-index: 1;
+    }
+    .scroll-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    #scroll-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+    }
+    .scroll-video-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.7) 100%);
+      pointer-events: none;
+    }
+
+    /* Annotation cards */
+    .annotation {
+      position: absolute;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      padding: 20px 24px;
+      max-width: 300px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
+      animation: rgb-border 4s linear infinite;
+    }
+    .annotation.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .annotation-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      animation: rgb-text 3s linear infinite;
+      margin-bottom: 6px;
+    }
+    .annotation-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .annotation-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .annotation-stat {
+      margin-top: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.4rem;
+      font-weight: 700;
+      animation: rgb-text 3s linear infinite;
+    }
+
+    .ann-1 { top: 20%; left: 5%; }
+    .ann-2 { top: 15%; right: 5%; }
+    .ann-3 { bottom: 20%; left: 5%; }
+    .ann-4 { bottom: 20%; right: 5%; }
+
+    /* ─── Stats Section ─── */
+    #specs {
+      position: relative;
+      z-index: 1;
+      padding: 120px 24px;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,10,20,0.5) 100%);
+    }
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 700;
+      margin-bottom: 3rem;
+    }
+    .section-title .accent { animation: rgb-text 3s linear infinite; }
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .spec-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 40px 24px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    .spec-card:first-child { border-radius: 20px 0 0 20px; }
+    .spec-card:last-child { border-radius: 0 20px 20px 0; }
+    .spec-card:hover {
+      background: rgba(255,255,255,0.07);
+      animation: rgb-glow 2s linear infinite;
+    }
+    .spec-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      animation: rgb-text 3s linear infinite;
+      line-height: 1;
+    }
+    .spec-suffix {
+      font-size: 1.5rem;
+      animation: rgb-text 3s linear infinite;
+    }
+    .spec-label {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    /* ─── Features ─── */
+    #features {
+      position: relative;
+      z-index: 1;
+      padding: 80px 24px 120px;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .feature-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 32px 28px;
+      backdrop-filter: blur(20px);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      padding: 1px;
+      background: linear-gradient(135deg, var(--r1), var(--r3), var(--r5), var(--r6));
+      background-size: 300% 300%;
+      animation: rainbow-shift 4s ease infinite;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-card:hover {
+      background: rgba(255,255,255,0.06);
+      transform: translateY(-4px);
+    }
+    .feature-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, rgba(255,0,85,0.2), rgba(0,170,255,0.2));
+      border: 1px solid rgba(255,255,255,0.08);
+      animation: rgb-glow 4s linear infinite;
+    }
+    .feature-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .feature-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .feature-tag {
+      display: inline-block;
+      margin-top: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      padding: 4px 12px;
+      border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--muted);
+      animation: rgb-border 4s linear infinite;
+    }
+
+    /* ─── CTA ─── */
+    #cta {
+      position: relative;
+      z-index: 1;
+      padding: 120px 24px;
+      text-align: center;
+      overflow: hidden;
+    }
+    .cta-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.06);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation: spin-slow 30s linear infinite;
+    }
+    .cta-ring-1 { width: 500px; height: 500px; animation-duration: 25s; }
+    .cta-ring-2 { width: 700px; height: 700px; animation-direction: reverse; animation-duration: 35s; }
+    .cta-ring-3 { width: 900px; height: 900px; animation-duration: 45s; }
+    .cta-inner { position: relative; z-index: 1; }
+    .cta-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .cta-title .rainbow-word { animation: rgb-text 3s linear infinite; }
+    .cta-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 500px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+    .cta-price {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      animation: rgb-text 3s linear infinite;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ─── Footer ─── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 60px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .footer-brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      animation: rgb-text 4s linear infinite;
+    }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+    .footer-links a {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: #fff; }
+    .footer-copy {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.25);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 768px) {
+      .specs-grid { grid-template-columns: repeat(2, 1fr); }
+      .spec-card:first-child { border-radius: 20px 0 0 0; }
+      .spec-card:last-child { border-radius: 0 0 20px 0; }
+      .spec-card:nth-child(2) { border-radius: 0 20px 0 0; }
+      .spec-card:nth-child(3) { border-radius: 0 0 0 20px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .ann-1, .ann-2, .ann-3, .ann-4 {
+        max-width: 160px;
+        padding: 12px 14px;
+      }
+      .annotation-desc { display: none; }
+      .ann-1 { top: auto; bottom: 12%; left: 4%; }
+      .ann-2 { top: auto; bottom: 12%; right: 4%; }
+      .ann-3 { display: none; }
+      .ann-4 { display: none; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Loader -->
+<div id="loader">
+  <div class="loader-logo">SteelSeries</div>
+  <div class="loader-bar-track">
+    <div class="loader-bar-fill" id="loader-bar"></div>
+  </div>
+  <div class="loader-text" id="loader-text">Initializing...</div>
+</div>
+
+<!-- Scroll Progress -->
+<div id="scroll-progress"></div>
+
+<!-- Starscape Canvas -->
+<canvas id="starscape"></canvas>
+
+<!-- Navbar -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">
+      <div class="nav-logo-mark">SS</div>
+      <span class="nav-brand-text">STEELSERIES</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#specs">Specs</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="https://steelseries.com/gaming-keyboards" target="_blank">All Keyboards</a></li>
+      <li><a href="https://steelseries.com/gaming-keyboards/apex-pro-mini" target="_blank" class="nav-cta">Buy Now</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section id="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="grid-overlay"></div>
+
+  <div class="hero-eyebrow">
+    <span class="hero-eyebrow-dot"></span>
+    World's Fastest Gaming Keyboard
+    <span class="hero-eyebrow-dot"></span>
+  </div>
+
+  <h1 class="hero-title">
+    Apex Pro
+    <span class="line2">Mini</span>
+  </h1>
+
+  <p class="hero-sub">
+    OmniPoint 2.0 HyperMagnetic switches. 20x faster actuation.
+    40 levels of per-key customization. 60% form factor. Full-size domination.
+  </p>
+
+  <div class="hero-buttons">
+    <a href="https://steelseries.com/gaming-keyboards/apex-pro-mini" target="_blank" class="btn-primary" id="hero-buy-btn">Buy Now — $179.99</a>
+    <a href="#scroll-animation" class="btn-secondary" id="hero-explore-btn">Explore It</a>
+  </div>
+
+  <div class="hero-scroll-hint">
+    <span class="scroll-hint-text">Scroll to explore</span>
+    <div class="scroll-hint-line"></div>
+  </div>
+</section>
+
+<!-- Scroll Animation Section -->
+<section id="scroll-animation">
+  <div class="scroll-sticky">
+    <video id="scroll-video" muted playsinline preload="auto" src="video/apex-pro.mp4"></video>
+    <div class="scroll-video-overlay"></div>
+
+    <div class="annotation ann-1" id="ann-1" data-show="0.05" data-hide="0.3">
+      <div class="annotation-num">01 / SWITCHES</div>
+      <div class="annotation-title">OmniPoint 2.0</div>
+      <div class="annotation-desc">HyperMagnetic sensors. Zero contact. Instant activation.</div>
+      <div class="annotation-stat">0.1mm</div>
+    </div>
+
+    <div class="annotation ann-2" id="ann-2" data-show="0.28" data-hide="0.55">
+      <div class="annotation-num">02 / SPEED</div>
+      <div class="annotation-title">Rapid Trigger</div>
+      <div class="annotation-desc">Dynamic activation eliminates latency from physical movement.</div>
+      <div class="annotation-stat">20x</div>
+    </div>
+
+    <div class="annotation ann-3" id="ann-3" data-show="0.53" data-hide="0.78">
+      <div class="annotation-num">03 / CONTROL</div>
+      <div class="annotation-title">40 Actuation Levels</div>
+      <div class="annotation-desc">Per-key precision from 0.1mm to 4.0mm. Yours to configure.</div>
+      <div class="annotation-stat">×40</div>
+    </div>
+
+    <div class="annotation ann-4" id="ann-4" data-show="0.76" data-hide="1.0">
+      <div class="annotation-num">04 / BUILD</div>
+      <div class="annotation-title">Aircraft Aluminum</div>
+      <div class="annotation-desc">Series 5000 alloy top plate. The same grade used in jets.</div>
+      <div class="annotation-stat">60%</div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats/Specs -->
+<section id="specs">
+  <div class="section-label">By the numbers</div>
+  <h2 class="section-title">Built for <span class="accent">Dominance</span></h2>
+  <div class="specs-grid">
+    <div class="spec-card" data-target="20" data-suffix="x">
+      <div class="spec-num"><span class="count">0</span><span class="spec-suffix">x</span></div>
+      <div class="spec-label">Faster Actuation<br>than mechanical</div>
+    </div>
+    <div class="spec-card" data-target="11" data-suffix="x">
+      <div class="spec-num"><span class="count">0</span><span class="spec-suffix">x</span></div>
+      <div class="spec-label">Faster Response<br>Time</div>
+    </div>
+    <div class="spec-card" data-target="40" data-suffix="">
+      <div class="spec-num"><span class="count">0</span><span class="spec-suffix"> lvl</span></div>
+      <div class="spec-label">Actuation Points<br>Per Key</div>
+    </div>
+    <div class="spec-card" data-target="100" data-suffix="">
+      <div class="spec-num"><span class="count">0</span><span class="spec-suffix">M+</span></div>
+      <div class="spec-label">Keystroke<br>Durability</div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features">
+  <div style="text-align:center; margin-bottom: 3rem;">
+    <div class="section-label">What's inside</div>
+    <h2 class="section-title">Every Detail <span class="accent">Engineered</span></h2>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <div class="feature-title">Rapid Trigger</div>
+      <div class="feature-desc">Eradicate actuation latency. Keys activate and deactivate based on travel distance, not a fixed point — giving you a decisive edge in competitive play.</div>
+      <span class="feature-tag">ZERO LATENCY</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎮</div>
+      <div class="feature-title">2-in-1 Action Keys</div>
+      <div class="feature-desc">Program two different actions to the same key. Walk forward with a light touch, sprint with a deeper press. One key, infinite tactical possibilities.</div>
+      <span class="feature-tag">DUAL ACTION</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔧</div>
+      <div class="feature-title">Ultimate Adjustability</div>
+      <div class="feature-desc">Tune every key's actuation point to the nearest 0.1mm. Set WASD to ultra-light for blazing movement, ability keys to deep to prevent misfires.</div>
+      <span class="feature-tag">PER-KEY CONTROL</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌈</div>
+      <div class="feature-title">Per-Key RGB Lighting</div>
+      <div class="feature-desc">Full per-key RGB illumination with 16.8M colors. Create stunning lighting effects and reactive patterns. Powered by SteelSeries Engine software.</div>
+      <span class="feature-tag">16.8M COLORS</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🏗️</div>
+      <div class="feature-title">Aircraft Aluminum Build</div>
+      <div class="feature-desc">Series 5000 aluminum alloy — identical to what's used in jet construction. Premium feel, structural rigidity, and a lifetime of endurance.</div>
+      <span class="feature-tag">SERIES 5000 ALLOY</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔌</div>
+      <div class="feature-title">Detachable USB-C</div>
+      <div class="feature-desc">Clean desk, clean cable management. The detachable braided USB-C cable snaps in securely and releases in seconds. USB-A passthrough included.</div>
+      <span class="feature-tag">BRAIDED CABLE</span>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-ring cta-ring-1"></div>
+  <div class="cta-ring cta-ring-2"></div>
+  <div class="cta-ring cta-ring-3"></div>
+  <div class="cta-inner">
+    <div class="section-label">Ready to dominate</div>
+    <h2 class="cta-title">Own the <span class="rainbow-word">Game</span></h2>
+    <p class="cta-sub">The Apex Pro Mini isn't just a keyboard — it's a competitive weapon. Built for those who refuse to lose.</p>
+    <div class="cta-price">$179.99</div>
+    <div class="hero-buttons">
+      <a href="https://steelseries.com/gaming-keyboards/apex-pro-mini" target="_blank" class="btn-primary" id="cta-buy-btn">Order Now</a>
+      <a href="https://steelseries.com/gg" target="_blank" class="btn-secondary" id="cta-software-btn">Get SteelSeries GG</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-brand">STEELSERIES</div>
+  <ul class="footer-links">
+    <li><a href="https://steelseries.com/gaming-keyboards" target="_blank">Keyboards</a></li>
+    <li><a href="https://support.steelseries.com" target="_blank">Support</a></li>
+    <li><a href="https://steelseries.com/gg" target="_blank">Software</a></li>
+    <li><a href="https://steelseries.com/esports" target="_blank">Esports</a></li>
+  </ul>
+  <div class="footer-copy">© 2024 SteelSeries ApS. All rights reserved.</div>
+</footer>
+
+<script>
+  // ─── Starscape ───
+  const canvas = document.getElementById('starscape');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  const STAR_COLORS = ['#ff005588','#ff660088','#ffdd0088','#00ff8888','#00aaff88','#aa00ff88','#ffffff66'];
+
+  function initStars() {
+    stars = [];
+    for (let i = 0; i < 180; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.2 + 0.2,
+        color: STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)],
+        speed: Math.random() * 0.3 + 0.05,
+        twinkleSpeed: Math.random() * 0.02 + 0.005,
+        twinklePhase: Math.random() * Math.PI * 2,
+        dx: (Math.random() - 0.5) * 0.2,
+        dy: (Math.random() - 0.5) * 0.2,
+      });
+    }
+  }
+  initStars();
+
+  function drawStars(t) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const s of stars) {
+      const twinkle = 0.3 + 0.7 * ((Math.sin(t * s.twinkleSpeed + s.twinklePhase) + 1) / 2);
+      ctx.globalAlpha = twinkle;
+      ctx.fillStyle = s.color;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fill();
+      s.x += s.dx;
+      s.y += s.dy;
+      if (s.x < 0) s.x = canvas.width;
+      if (s.x > canvas.width) s.x = 0;
+      if (s.y < 0) s.y = canvas.height;
+      if (s.y > canvas.height) s.y = 0;
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(drawStars);
+  }
+  requestAnimationFrame(drawStars);
+
+  // ─── Loader ───
+  const loader = document.getElementById('loader');
+  const loaderBar = document.getElementById('loader-bar');
+  const loaderText = document.getElementById('loader-text');
+  const video = document.getElementById('scroll-video');
+  const messages = ['Loading assets...', 'Calibrating switches...', 'Charging RGB...', 'Ready.'];
+
+  let loadProgress = 0;
+  const loadInterval = setInterval(() => {
+    loadProgress += Math.random() * 15 + 5;
+    if (loadProgress > 100) loadProgress = 100;
+    loaderBar.style.width = loadProgress + '%';
+    loaderText.textContent = messages[Math.floor((loadProgress / 100) * (messages.length - 1))];
+    if (loadProgress >= 100) {
+      clearInterval(loadInterval);
+      setTimeout(() => loader.classList.add('hidden'), 300);
+    }
+  }, 120);
+
+  // ─── Navbar scroll ───
+  const navbar = document.getElementById('navbar');
+  const scrollBar = document.getElementById('scroll-progress');
+
+  // ─── Video scroll scrubbing ───
+  const scrollSection = document.getElementById('scroll-animation');
+  const annotations = document.querySelectorAll('.annotation');
+
+  let rafPending = false;
+  let lastScrollY = 0;
+
+  window.addEventListener('scroll', () => { lastScrollY = window.scrollY; if (!rafPending) { rafPending = true; requestAnimationFrame(onScroll); }}, { passive: true });
+
+  function onScroll() {
+    rafPending = false;
+    const scrolled = lastScrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollFrac = docHeight > 0 ? scrolled / docHeight : 0;
+
+    // Progress bar
+    scrollBar.style.width = (scrollFrac * 100) + '%';
+
+    // Navbar
+    if (scrolled > 60) navbar.classList.add('scrolled');
+    else navbar.classList.remove('scrolled');
+
+    // Video scrubbing
+    const secTop = scrollSection.offsetTop;
+    const secHeight = scrollSection.offsetHeight - window.innerHeight;
+    if (secHeight > 0 && scrolled >= secTop && scrolled <= secTop + secHeight) {
+      const progress = (scrolled - secTop) / secHeight;
+      if (video.readyState >= 1 && video.duration) {
+        video.currentTime = progress * video.duration;
+      }
+      // Annotation visibility
+      annotations.forEach(ann => {
+        const show = parseFloat(ann.dataset.show);
+        const hide = parseFloat(ann.dataset.hide);
+        if (progress >= show && progress < hide) ann.classList.add('visible');
+        else ann.classList.remove('visible');
+      });
+    } else if (scrolled < secTop) {
+      if (video.readyState >= 1) video.currentTime = 0;
+      annotations.forEach(a => a.classList.remove('visible'));
+    }
+  }
+
+  // ─── Count-up ───
+  function easeOutExpo(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
+
+  function animateCount(el, target) {
+    const start = performance.now();
+    const duration = 1800;
+    function step(now) {
+      const t = Math.min((now - start) / duration, 1);
+      el.textContent = Math.floor(easeOutExpo(t) * target);
+      if (t < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    }
+    requestAnimationFrame(step);
+  }
+
+  const specCards = document.querySelectorAll('.spec-card');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        const target = parseInt(entry.target.dataset.target);
+        const countEl = entry.target.querySelector('.count');
+        setTimeout(() => animateCount(countEl, target), i * 200);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+
+  specCards.forEach(c => observer.observe(c));
+</script>
+</body>
+</html>
