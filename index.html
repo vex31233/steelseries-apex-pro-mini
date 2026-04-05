@@ -2,435 +2,787 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<meta name="theme-color" content="#ffffff"/>
 <title>Apex Pro Mini — SteelSeries | World's Fastest Keyboard</title>
-<meta name="description" content="OmniPoint 2.0 HyperMagnetic switches. 20x faster actuation. 40 actuation levels. The world's most advanced gaming keyboard."/>
+<meta name="description" content="OmniPoint 2.0 HyperMagnetic switches. 20x faster actuation. 40 levels of per-key precision."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#000;--bg1:#0a0a0c;--bg2:#0f0f12;--bg3:#141418;
-  --border:#1e1e24;--border2:#2a2a34;
-  --text:#f0f0f4;--muted:#5a5a6e;--muted2:#888899;
-  --cyan:#00e5ff;--orange:#ff5722;--purple:#7c3aed;
-  --mono:#4a9eff;
+  --bg:#fff;--bg1:#f6f6f6;--bg2:#efefef;--bg3:#e8e8e8;
+  --border:#e0e0e0;--border2:#ccc;
+  --text:#0a0a0a;--muted:#999;--muted2:#555;
+  --accent:#ff6600;--accent2:#ff3300;
+  --orange:#ff5722;--purple:#7c3aed;
 }
-html{scroll-behavior:auto}
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-::selection{background:#00e5ff22;color:#fff}
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:#000}
-::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#ff0055,#00e5ff,#aa00ff);border-radius:2px}
+html{scroll-behavior:auto;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;touch-action:manipulation}
+::selection{background:#ff660022}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--accent)}
 
-@keyframes rgb-shift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-@keyframes draw{from{stroke-dashoffset:var(--len)}to{stroke-dashoffset:0}}
-@keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-@keyframes scanline{from{transform:translateY(-100%)}to{transform:translateY(100vh)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideLeft{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideRight{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes countBar{from{width:0}to{width:var(--w)}}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+@keyframes rgbLine{0%{background-position:0%}100%{background-position:200%}}
 
-/* ── LOADER ── */
-#loader{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s,visibility .5s}
-#loader.gone{opacity:0;visibility:hidden}
-.ld-brand{font-family:'Space Grotesk',sans-serif;font-size:.85rem;letter-spacing:.4em;color:var(--muted);margin-bottom:2rem;text-transform:uppercase}
-.ld-track{width:220px;height:2px;background:#111;position:relative}
-.ld-fill{height:100%;width:0%;background:linear-gradient(90deg,#ff0055,#00e5ff,#aa00ff);background-size:200%;animation:rgb-shift 1s ease infinite;transition:width .08s linear}
-.ld-pct{margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);letter-spacing:.1em}
+/* LOADER */
+#loader{position:fixed;inset:0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s,visibility .5s}
+#loader.gone{opacity:0;visibility:hidden;pointer-events:none}
+.ld-logo{font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.5em;color:#999;margin-bottom:1.5rem;text-transform:uppercase}
+.ld-bar{width:200px;height:1px;background:#e0e0e0}
+.ld-fill{height:100%;width:0;background:var(--accent);transition:width .08s linear}
+.ld-num{margin-top:.8rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:#bbb;letter-spacing:.15em}
 
-/* ── PROGRESS BAR ── */
-#prog{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,#ff0055,#ffdd00,#00ff88,#00e5ff,#aa00ff,#ff0055);background-size:300%;animation:rgb-shift 2s linear infinite;z-index:1000;pointer-events:none;transition:width .05s linear}
+/* PROGRESS */
+#prog{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,#ff3300,#ff6600,#ffcc00,#cc00ff,#ff0066);background-size:200%;animation:rgbLine 2s linear infinite;z-index:1000;pointer-events:none}
 
-/* ── NAVBAR ── */
-#nav{position:fixed;top:0;left:0;right:0;padding:20px 40px;display:flex;align-items:center;justify-content:space-between;z-index:900;transition:all .4s cubic-bezier(.16,1,.3,1)}
-#nav.scrolled{top:10px;left:50%;transform:translateX(-50%);width:min(800px,calc(100% - 32px));padding:0 24px;background:rgba(0,0,0,.85);backdrop-filter:blur(24px);border:1px solid var(--border2);border-radius:40px}
-.nav-in{display:flex;align-items:center;justify-content:space-between;width:100%;height:56px}
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:900;transition:all .35s ease}
+.nav-rgb{height:2px;background:linear-gradient(90deg,#ff0000,#ff6600,#ffcc00,#cc00ff,#ff0066,#ff0000);background-size:200%;animation:rgbLine 4s linear infinite;opacity:.5}
+.nav-body{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid transparent;transition:border-color .3s}
+#nav.scrolled .nav-body{border-bottom-color:var(--border)}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-icon{width:28px;height:28px;background:linear-gradient(135deg,#ff0055,#00e5ff);background-size:200%;animation:rgb-shift 3s ease infinite;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:.65rem;font-weight:700}
-.nav-name{font-family:'Space Grotesk',sans-serif;font-size:.82rem;font-weight:600;letter-spacing:.12em;color:var(--text)}
-.nav-links{display:flex;align-items:center;gap:24px;list-style:none}
-.nav-links a{font-size:.8rem;color:var(--muted2);text-decoration:none;letter-spacing:.04em;transition:color .2s}
-.nav-links a:hover{color:#fff}
-.nav-buy{background:linear-gradient(90deg,#ff0055,#00e5ff);background-size:200%;animation:rgb-shift 3s ease infinite;color:#fff!important;padding:7px 18px;border-radius:20px;font-weight:600;font-size:.78rem;transition:transform .2s,box-shadow .2s}
-.nav-buy:hover{transform:scale(1.04);box-shadow:0 0 20px #00e5ff44}
+.nav-logo-svg{height:22px;width:auto;display:block}
+.nav-prod{font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.15em;color:var(--accent);margin-top:1px}
+.nav-links{display:flex;gap:24px;list-style:none}
+.nav-links a{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:var(--accent);color:#fff;padding:9px 22px;text-decoration:none;transition:background .2s,transform .2s;display:inline-block}
+.nav-cta:hover{background:#ff4400;transform:translateY(-1px)}
 
-/* ── HERO ── */
-#hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;overflow:hidden}
-.hero-dots{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.06) 1px,transparent 1px);background-size:32px 32px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%);pointer-events:none}
-.hero-line{position:absolute;top:0;left:50%;width:1px;height:100%;background:linear-gradient(180deg,transparent,rgba(0,229,255,.15),transparent);pointer-events:none}
-.hero-tag{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.2em;color:var(--muted);border:1px solid var(--border2);padding:6px 16px;border-radius:4px;margin-bottom:2rem;animation:fadeUp .8s ease both}
-.hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);animation:pulse 2s ease infinite}
-.hero-h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(3.5rem,9vw,8rem);font-weight:700;line-height:.95;letter-spacing:-.03em;animation:fadeUp .8s .1s ease both}
-.hero-h1 em{font-style:normal;background:linear-gradient(90deg,#ff0055,#ffdd00,#00ff88,#00e5ff,#aa00ff,#ff0055);background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:rgb-shift 3s ease infinite}
-.hero-sub{max-width:500px;margin:1.5rem auto 2.5rem;font-size:1rem;color:var(--muted2);line-height:1.7;animation:fadeUp .8s .2s ease both}
-.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s .3s ease both}
-.btn-p{padding:12px 32px;border-radius:6px;font-weight:600;font-size:.88rem;color:#fff;text-decoration:none;background:linear-gradient(90deg,#ff0055,#ff6600,#ffdd00,#00ff88,#00e5ff,#aa00ff,#ff0055);background-size:300%;animation:rgb-shift 2.5s ease infinite;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;letter-spacing:.03em}
-.btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,229,255,.3)}
-.btn-s{padding:11px 32px;border-radius:6px;font-weight:500;font-size:.88rem;color:var(--text);text-decoration:none;background:transparent;border:1px solid var(--border2);cursor:pointer;transition:all .2s;letter-spacing:.03em}
-.btn-s:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 20px rgba(0,229,255,.15)}
-.hero-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;animation:fadeUp .8s .6s ease both}
-.hint-txt{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.2em;color:rgba(255,255,255,.2)}
-.hint-bar{width:1px;height:32px;background:linear-gradient(180deg,rgba(255,255,255,.2),transparent);animation:float 2s ease infinite}
+/* HERO — white */
+#hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 20px 80px;background:#fff;position:relative;overflow:hidden}
+.hero-line-h{position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--border);pointer-events:none}
+.hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;margin-bottom:1.2rem;animation:fadeUp .7s ease both}
+.hero-tag{display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.2em;color:var(--muted2);border:1px solid var(--border2);padding:6px 16px;margin-bottom:2rem;animation:fadeUp .7s .05s ease both}
+.tag-dot{width:5px;height:5px;background:var(--accent);animation:pulse 2s ease infinite;flex-shrink:0}
+h1.hero-h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(4.5rem,13vw,12rem);font-weight:800;line-height:.88;text-transform:uppercase;letter-spacing:-.01em;animation:fadeUp .7s .1s ease both}
+h1.hero-h1 span{display:block;color:var(--accent)}
+.hero-sub{max-width:440px;font-size:.92rem;color:var(--muted2);line-height:1.75;margin:1.5rem auto 2.5rem;animation:fadeUp .7s .15s ease both}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:fadeUp .7s .2s ease both}
+.btn-p{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;background:var(--accent);color:#fff;padding:13px 34px;text-decoration:none;transition:background .2s,transform .15s;display:inline-block}
+.btn-p:hover{background:#ff4400;transform:translateY(-2px)}
+.btn-s{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;background:transparent;color:var(--text);padding:12px 34px;text-decoration:none;border:1.5px solid var(--border2);transition:all .2s;display:inline-block}
+.btn-s:hover{border-color:var(--accent);color:var(--accent)}
+.hero-hint{margin-top:3rem;display:flex;flex-direction:column;align-items:center;gap:6px;opacity:.35;animation:fadeUp .7s .4s ease both}
+.hint-t{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.2em;color:var(--muted)}
+.hint-bar{width:1px;height:24px;background:linear-gradient(var(--text),transparent)}
 
-/* ── SCROLL SECTION ── */
-#scroll-section{position:relative;height:400vh;z-index:1}
-.scroll-sticky{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center}
-#svid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;will-change:transform}
-.vid-grad{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.8) 100%);pointer-events:none}
-.vid-bot{position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(transparent,#000);pointer-events:none}
-.ann{position:absolute;max-width:260px;opacity:0;transform:translateY(12px);transition:opacity .35s ease,transform .35s ease;pointer-events:none}
-.ann.on{opacity:1;transform:translateY(0)}
-.ann-inner{background:rgba(0,0,0,.8);border:1px solid var(--border2);border-radius:8px;padding:16px 20px;backdrop-filter:blur(20px)}
-.ann-n{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.2em;color:var(--cyan);margin-bottom:4px}
-.ann-t{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.9rem;color:#fff;margin-bottom:4px}
-.ann-d{font-size:.75rem;color:var(--muted2);line-height:1.5}
-.ann-v{margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--cyan)}
-.ann1{top:18%;left:4%}.ann2{top:15%;right:4%}.ann3{bottom:22%;left:4%}.ann4{bottom:22%;right:4%}
-
-/* ── SECTION SHARED ── */
-.s-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.3em;color:var(--cyan);text-transform:uppercase;margin-bottom:.75rem}
-.s-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,3.5vw,3rem);font-weight:700;letter-spacing:-.02em;line-height:1.1}
-.s-sub{font-size:.9rem;color:var(--muted2);line-height:1.7;max-width:480px}
-
-/* ── ACTUATION CHART ── */
-#chart-section{padding:100px 0;background:var(--bg1);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.chart-wrap{max-width:1200px;margin:0 auto;padding:0 40px}
-.chart-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;gap:24px;flex-wrap:wrap}
-.chart-legend{display:flex;gap:20px;flex-wrap:wrap}
-.leg-item{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted2)}
-.leg-line{width:24px;height:2px;border-radius:1px}
-.chart-container{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:32px;position:relative;overflow:hidden}
-.chart-container::before{content:'';position:absolute;top:-1px;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--purple));opacity:.6}
-#actuation-svg{width:100%;display:block}
-.chart-controls{margin-top:24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
-.ctrl-label{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted2)}
-.ctrl-group{display:flex;align-items:center;gap:12px}
-#ap-slider{-webkit-appearance:none;appearance:none;width:200px;height:3px;border-radius:2px;background:var(--border2);outline:none;cursor:pointer}
-#ap-slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--cyan);border:2px solid #000;box-shadow:0 0 8px var(--cyan);cursor:pointer}
-#ap-val{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--cyan);min-width:50px}
-.chart-note{margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted);line-height:1.6}
-
-/* ── RAPID TRIGGER ── */
-#rt-section{padding:100px 40px;max-width:1200px;margin:0 auto}
-.rt-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px}
-.rt-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:32px;position:relative;overflow:hidden}
-.rt-card-title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1rem;margin-bottom:6px}
-.rt-card-sub{font-size:.8rem;color:var(--muted2);margin-bottom:28px}
-.rt-viz{position:relative;height:80px;background:var(--bg3);border-radius:6px;overflow:hidden;border:1px solid var(--border)}
-.rt-track{position:absolute;top:50%;left:0;right:0;height:2px;background:var(--border2);transform:translateY(-50%)}
-.rt-key{position:absolute;top:50%;height:48px;border-radius:4px;transform:translateY(-50%);transition:left .8s ease,width .8s ease}
-.rt-act{position:absolute;top:4px;height:calc(100% - 8px);background:rgba(255,87,34,.12);border:1px dashed rgba(255,87,34,.4);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.6rem;color:#ff5722;letter-spacing:.1em;transition:left .8s ease,width .8s ease}
-.rt-line-act{position:absolute;top:0;bottom:0;width:2px;background:#ff5722}
-.rt-line-reset{position:absolute;top:0;bottom:0;width:2px;background:#444}
-.rt-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.65rem;margin-top:16px}
-.rt-badge.bad{background:rgba(255,87,34,.1);border:1px solid rgba(255,87,34,.3);color:#ff5722}
-.rt-badge.good{background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.3);color:var(--cyan)}
-.rt-animate-btn{position:absolute;top:16px;right:16px;background:transparent;border:1px solid var(--border2);border-radius:6px;padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted2);cursor:pointer;transition:all .2s}
-.rt-animate-btn:hover{border-color:var(--cyan);color:var(--cyan)}
-
-/* ── DASHBOARD ── */
-#dashboard{padding:80px 40px;background:var(--bg1);border-top:1px solid var(--border)}
-.dash-inner{max-width:1200px;margin:0 auto}
-.dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:48px;border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.dash-card{background:var(--bg2);padding:32px 24px;position:relative}
-.dash-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0;transition:opacity .3s}
-.dash-card:hover::after{opacity:1}
-.dash-label{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-bottom:12px}
-.dash-val{font-family:'Space Grotesk',sans-serif;font-size:2.8rem;font-weight:700;line-height:1;margin-bottom:4px}
-.dash-val .unit{font-size:1.2rem;color:var(--muted2)}
-.dash-desc{font-size:.78rem;color:var(--muted2);line-height:1.5}
-.dash-bar{margin-top:16px;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
-.dash-bar-fill{height:100%;border-radius:2px;width:0%;transition:width 1.2s cubic-bezier(0,0,.2,1)}
-
-/* ── FEATURES ── */
-#features{padding:80px 40px;max-width:1200px;margin:0 auto}
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:48px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.feat-card{background:var(--bg1);padding:32px 28px;transition:background .2s}
-.feat-card:hover{background:var(--bg2)}
-.feat-icon{font-size:1.3rem;margin-bottom:14px;display:block}
-.feat-name{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.95rem;margin-bottom:8px}
-.feat-desc{font-size:.8rem;color:var(--muted2);line-height:1.6}
-.feat-chip{display:inline-block;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.12em;color:var(--cyan);border:1px solid rgba(0,229,255,.25);padding:3px 10px;border-radius:3px}
-
-/* ── RGB SECTION ── */
-#rgb-section{padding:80px 40px;background:var(--bg1);border-top:1px solid var(--border);text-align:center}
-.rgb-inner{max-width:700px;margin:0 auto}
-.rgb-keys{display:flex;justify-content:center;gap:4px;margin:40px 0;flex-wrap:wrap}
-.rgb-key{width:36px;height:36px;border-radius:6px;background:var(--bg3);border:1px solid var(--border);position:relative;overflow:hidden;cursor:pointer;transition:transform .1s}
-.rgb-key:hover{transform:scale(1.1)}
-.rgb-key-glow{position:absolute;inset:0;border-radius:5px;opacity:.8}
-@keyframes key-cycle{0%{background:#ff0055}16%{background:#ff6600}33%{background:#ffdd00}50%{background:#00ff88}66%{background:#00aaff}83%{background:#aa00ff}100%{background:#ff0055}}
-.rgb-key-glow{animation:key-cycle 3s linear infinite}
-.rgb-key:nth-child(2) .rgb-key-glow{animation-delay:-.2s}
-.rgb-key:nth-child(3) .rgb-key-glow{animation-delay:-.4s}
-.rgb-key:nth-child(4) .rgb-key-glow{animation-delay:-.6s}
-.rgb-key:nth-child(5) .rgb-key-glow{animation-delay:-.8s}
-.rgb-key:nth-child(6) .rgb-key-glow{animation-delay:-1s}
-.rgb-key:nth-child(7) .rgb-key-glow{animation-delay:-1.2s}
-.rgb-key:nth-child(8) .rgb-key-glow{animation-delay:-1.4s}
-.rgb-key:nth-child(9) .rgb-key-glow{animation-delay:-1.6s}
-.rgb-key:nth-child(10) .rgb-key-glow{animation-delay:-1.8s}
-.rgb-key:nth-child(11) .rgb-key-glow{animation-delay:-2s}
-.rgb-key:nth-child(12) .rgb-key-glow{animation-delay:-2.2s}
-.rgb-key:nth-child(13) .rgb-key-glow{animation-delay:-2.4s}
-.rgb-key:nth-child(14) .rgb-key-glow{animation-delay:-2.6s}
-
-/* ── CTA ── */
-#cta{padding:120px 40px;text-align:center;border-top:1px solid var(--border)}
-.cta-price{font-family:'JetBrains Mono',monospace;font-size:3rem;font-weight:700;color:var(--cyan);margin:1.5rem 0}
-.cta-note{font-size:.8rem;color:var(--muted);margin-top:.5rem}
-
-/* ── FOOTER ── */
-footer{border-top:1px solid var(--border);padding:48px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
-.foot-brand{font-family:'Space Grotesk',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.15em;color:var(--muted)}
-.foot-links{display:flex;gap:20px;list-style:none}
-.foot-links a{font-size:.78rem;color:var(--muted);text-decoration:none;transition:color .2s}
-.foot-links a:hover{color:#fff}
-.foot-copy{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:rgba(255,255,255,.2)}
-
-@media(max-width:768px){
-  .rt-grid{grid-template-columns:1fr}
-  .dash-grid{grid-template-columns:repeat(2,1fr)}
-  .feat-grid{grid-template-columns:1fr}
-  .ann1,.ann2,.ann3,.ann4{max-width:160px}
-  .ann3,.ann4{display:none}
-  footer{flex-direction:column;align-items:flex-start}
-  .nav-links{display:none}
-  .chart-wrap{padding:0 16px}
+/* SCROLL VIDEO SECTION */
+#scroll-section{position:relative;height:600vh;background:#fff}
+.scroll-sticky{
+  position:sticky;top:0;height:100svh;background:#fff;
+  display:grid;
+  grid-template-rows:1fr auto;
+  overflow:visible; /* allow annotation cards to show outside video area */
+  padding-top:58px
 }
+.scroll-sticky>*{overflow:hidden} /* clip children except annotations */
+.vid-wrap{
+  min-height:0;display:flex;align-items:center;justify-content:center;
+  padding:8px 16px;position:relative;overflow:hidden;
+}
+#svid{
+  max-width:min(96vw,1180px);
+  max-height:calc(100svh - 58px - 120px);
+  width:auto;height:auto;
+  display:block;
+  transform:translateZ(0); /* GPU composite layer */
+  will-change:auto; /* only hint when scrubbing */
+}
+@media(max-width:600px){
+  #svid{max-width:100vw;max-height:calc(100svh - 58px - 100px)}
+}
+
+/* Actuation stat panel */
+.stat-panel{
+  height:120px;flex-shrink:0;
+  padding:0 max(16px, calc(50vw - 570px));
+  position:relative;
+  border-top:1px solid var(--border);
+  background:#fff;
+  display:flex;align-items:center;
+}
+@media(max-width:600px){.stat-panel{height:100px;padding:0 16px}}
+.stat-block{position:absolute;inset:0;padding:inherit;display:flex;align-items:center;gap:20px;opacity:0;transform:translateY(10px);transition:opacity .32s ease,transform .32s ease;pointer-events:none}
+.stat-block.on{opacity:1;transform:translateY(0)}
+.stat-num{font-family:'Barlow Condensed',sans-serif;font-size:clamp(2.4rem,6vw,4.2rem);font-weight:800;line-height:1;color:var(--text);flex-shrink:0;min-width:80px}
+.stat-num em{color:var(--accent);font-style:normal}
+.stat-info{flex:1;min-width:0}
+.stat-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(.9rem,2vw,1rem);font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stat-desc{font-size:.75rem;color:var(--muted2);line-height:1.5;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.stat-bar-wrap{margin-top:8px;height:2px;background:var(--border);overflow:hidden}
+.stat-bar{height:100%;background:var(--accent);width:0;transition:width 1s cubic-bezier(0,0,.2,1) .1s}
+.stat-block.on .stat-bar{width:var(--bw,100%)}
+
+/* Annotation cards — OUTSIDE vid-wrap, fixed to scroll-sticky */
+.anns{
+  position:absolute;
+  /* top offset: navbar(58) + row1 height. Use inset to cover whole sticky */
+  top:58px;left:0;right:0;bottom:120px;
+  pointer-events:none;
+  z-index:10; /* above video */
+}
+.ann{position:absolute;max-width:190px;opacity:0;transition:opacity .3s,transform .3s;transform:translateY(8px)}
+.ann.on{opacity:1;transform:translateY(0)}
+.ann-card{background:rgba(255,255,255,.96);border:1px solid var(--border2);border-left:2px solid var(--accent);padding:11px 14px;box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.ann-n{font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.18em;color:var(--accent);margin-bottom:3px}
+.ann-t{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;text-transform:uppercase;letter-spacing:.04em;color:var(--text);margin-bottom:2px}
+.ann-d{font-size:.7rem;color:var(--muted2);line-height:1.4}
+.ann1{top:20%;left:20px}.ann2{top:20%;right:20px;max-width:175px}
+@media(max-width:900px){.ann1,.ann2{display:none}}
+
+/* SHARED */
+.section-pad{padding:80px 32px;max-width:1200px;margin:0 auto}
+@media(max-width:600px){.section-pad{padding:60px 20px}}
+.s-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.28em;color:var(--muted);text-transform:uppercase;margin-bottom:.6rem}
+.s-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(2rem,4.5vw,3.6rem);font-weight:800;text-transform:uppercase;letter-spacing:-.01em;line-height:1}
+.s-sub{font-size:.87rem;color:var(--muted2);line-height:1.75;max-width:460px;margin-top:.75rem}
+
+/* ── ACTUATION RATE SHOWCASE ── */
+#actu-showcase{
+  background:#fff;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:80px 0;
+  overflow:hidden;
+}
+.actu-inner{
+  max-width:1180px;
+  margin:0 auto;
+  padding:0 40px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:64px;
+  align-items:center;
+}
+@media(max-width:800px){.actu-inner{grid-template-columns:1fr;gap:40px;padding:0 20px}}
+
+/* Left: video player */
+.actu-vid-col{display:flex;flex-direction:column;align-items:flex-start;gap:20px}
+.actu-vid-wrap{
+  position:relative;
+  width:100%;
+  max-width:420px;
+}
+.actu-vid-frame{
+  position:relative;
+  border:1px solid var(--border2);
+  overflow:hidden;
+  background:#000;
+}
+.actu-vid-frame::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,#ff3300,#ff6600,#ffcc00,#cc00ff,#ff0066);
+  background-size:200%;
+  animation:rgbLine 3s linear infinite;
+  z-index:2;
+}
+#kclip{
+  width:100%;
+  height:auto;
+  display:block;
+  transform:translateZ(0);
+}
+/* Live indicator */
+.actu-live{
+  position:absolute;
+  bottom:10px;
+  left:10px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  background:rgba(0,0,0,.75);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  padding:5px 10px;
+  z-index:3;
+}
+.live-dot{
+  width:6px;height:6px;
+  border-radius:50%;
+  background:#ff3300;
+  animation:pulse 1s ease infinite;
+}
+.live-txt{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.58rem;
+  letter-spacing:.15em;
+  color:#fff;
+  text-transform:uppercase;
+}
+/* Key press counter under video */
+.actu-counter{
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+  border-left:2px solid var(--accent);
+  padding-left:14px;
+}
+.actu-cnum{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:3rem;
+  font-weight:800;
+  color:var(--text);
+  line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.actu-clabel{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.62rem;
+  letter-spacing:.14em;
+  color:var(--muted);
+  text-transform:uppercase;
+  line-height:1.4;
+}
+
+/* Right: data dashboard */
+.actu-data-col{display:flex;flex-direction:column;gap:0}
+.actu-header{margin-bottom:32px}
+
+/* Actuation meter — the core visual */
+.actu-meter{
+  position:relative;
+  height:200px;
+  background:var(--bg1);
+  border:1px solid var(--border);
+  overflow:hidden;
+  margin-bottom:24px;
+}
+.actu-meter-bg-lines{
+  position:absolute;
+  inset:0;
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size:25% 20%;
+}
+/* Animated waveform bars */
+.actu-wave{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  height:100%;
+  display:flex;
+  align-items:flex-end;
+  gap:2px;
+  padding:0 4px;
+}
+.wave-bar{
+  flex:1;
+  border-radius:1px 1px 0 0;
+  transform-origin:bottom;
+  transform:translateZ(0);
+  animation:waveAnim 1.2s ease-in-out infinite alternate;
+}
+@keyframes waveAnim{
+  from{transform:scaleY(var(--min,0.08));opacity:.5}
+  to{transform:scaleY(var(--max,1));opacity:1}
+}
+/* Actuation line */
+.actu-line{
+  position:absolute;
+  top:50%;
+  left:0;right:0;
+  height:1.5px;
+  background:var(--accent);
+  transform:translateY(-50%);
+  box-shadow:0 0 8px rgba(255,102,0,.5);
+  transition:top .4s cubic-bezier(.34,1.56,.64,1);
+}
+.actu-line-label{
+  position:absolute;
+  right:8px;
+  top:-18px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.58rem;
+  letter-spacing:.12em;
+  color:var(--accent);
+  background:rgba(255,255,255,.9);
+  padding:1px 6px;
+}
+/* Axis labels */
+.actu-y-0{position:absolute;bottom:4px;left:6px;font-family:'JetBrains Mono',monospace;font-size:.56rem;color:var(--muted)}
+.actu-y-max{position:absolute;top:4px;left:6px;font-family:'JetBrains Mono',monospace;font-size:.56rem;color:var(--muted)}
+.actu-x-label{position:absolute;bottom:4px;right:6px;font-family:'JetBrains Mono',monospace;font-size:.56rem;color:var(--muted)}
+
+/* KPI row */
+.actu-kpis{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);
+  margin-bottom:24px;
+}
+.actu-kpi{
+  background:#fff;
+  padding:16px 14px;
+  position:relative;
+  overflow:hidden;
+}
+.actu-kpi::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:2px;
+  background:var(--accent);
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform .6s cubic-bezier(.16,1,.3,1);
+}
+.actu-kpi.active::after{transform:scaleX(1)}
+.kpi-val{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:1.8rem;
+  font-weight:800;
+  line-height:1;
+  margin-bottom:2px;
+}
+.kpi-lbl{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.56rem;
+  letter-spacing:.14em;
+  color:var(--muted);
+  text-transform:uppercase;
+}
+/* Comparison bar */
+.actu-compare{display:flex;flex-direction:column;gap:10px}
+.cmp-row{display:grid;grid-template-columns:80px 1fr auto;align-items:center;gap:10px}
+.cmp-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.08em;color:var(--muted2);text-align:right}
+.cmp-track{height:6px;background:var(--bg2);border-radius:3px;overflow:hidden;position:relative}
+.cmp-fill{
+  height:100%;
+  border-radius:3px;
+  width:0;
+  transition:width 1.4s cubic-bezier(0,0,.2,1);
+  transform:translateZ(0);
+}
+.cmp-val{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted2);min-width:36px;text-align:right}
+
+/* Entrance animations — triggered by IntersectionObserver */
+.reveal{
+  opacity:0;
+  transform:translateY(28px);
+  transition:opacity .6s ease,transform .6s cubic-bezier(.16,1,.3,1);
+}
+.reveal.in{opacity:1;transform:translateY(0)}
+.reveal-l{
+  opacity:0;
+  transform:translateX(-32px);
+  transition:opacity .7s ease,transform .7s cubic-bezier(.16,1,.3,1);
+}
+.reveal-l.in{opacity:1;transform:translateX(0)}
+.reveal-r{
+  opacity:0;
+  transform:translateX(32px);
+  transition:opacity .7s ease,transform .7s cubic-bezier(.16,1,.3,1);
+}
+.reveal-r.in{opacity:1;transform:translateX(0)}
+
+/* CHART */
+#chart-section{background:var(--bg1);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 0;content-visibility:auto}
+.chart-wrap{max-width:1100px;margin:0 auto;padding:0 32px}
+@media(max-width:600px){.chart-wrap{padding:0 16px}}
+.chart-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;gap:20px;flex-wrap:wrap}
+.chart-legend{display:flex;gap:16px;flex-wrap:wrap}
+.leg{display:flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:.67rem;color:var(--muted2)}
+.leg-l{width:20px;height:2px}
+.chart-box{background:#fff;border:1px solid var(--border);padding:28px;position:relative}
+.chart-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#ff3300,#ff6600,#ffcc00,#cc00ff,#ff0066);opacity:.6}
+#actu-svg{width:100%;display:block}
+.chart-ctrls{margin-top:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.c-label{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted2)}
+#ap-sl{-webkit-appearance:none;width:180px;height:2px;background:var(--border2);outline:none;cursor:pointer}
+#ap-sl::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--accent);border:2px solid #fff;box-shadow:0 0 0 1px var(--border2);cursor:pointer}
+#ap-v{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--accent);min-width:44px}
+.chart-note{margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted);line-height:1.65}
+
+/* RAPID TRIGGER */
+#rt-section{border-bottom:1px solid var(--border);content-visibility:auto}
+.rt-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:40px;background:var(--border)}
+@media(max-width:680px){.rt-grid{grid-template-columns:1fr}}
+.rt-card{background:#fff;padding:28px}
+.rt-card-t{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.rt-card-s{font-size:.78rem;color:var(--muted2);margin-bottom:24px}
+.rt-viz{height:72px;background:var(--bg1);border:1px solid var(--border);position:relative;overflow:hidden}
+.rt-track{position:absolute;top:50%;left:0;right:0;height:1px;background:var(--border2);transform:translateY(-50%)}
+.rt-dz{position:absolute;top:3px;bottom:3px;background:rgba(255,87,34,.1);border:1px dashed rgba(255,87,34,.4);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.5rem;color:#ff5722;letter-spacing:.1em}
+.rt-lact{position:absolute;top:0;bottom:0;width:1px;background:#ff5722}
+.rt-lrst{position:absolute;top:0;bottom:0;width:1px;background:#ccc}
+.rt-badge{display:inline-flex;align-items:center;font-family:'JetBrains Mono',monospace;font-size:.6rem;margin-top:14px;padding:4px 12px;border:1px solid}
+.rt-badge.bad{border-color:rgba(255,87,34,.3);color:#ff5722;background:rgba(255,87,34,.05)}
+.rt-badge.good{border-color:rgba(255,102,0,.3);color:var(--accent);background:rgba(255,102,0,.05)}
+.rt-play{position:absolute;top:12px;right:12px;border:1px solid var(--border2);padding:4px 10px;font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--muted2);background:#fff;cursor:pointer;transition:all .2s}
+.rt-play:hover{border-color:var(--accent);color:var(--accent)}
+
+/* DASHBOARD */
+#dashboard{background:var(--bg1);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 32px;content-visibility:auto}
+.dash-inner{max-width:1100px;margin:0 auto}
+.dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:40px;background:var(--border)}
+@media(max-width:700px){.dash-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:400px){.dash-grid{grid-template-columns:1fr}}
+.dash-c{background:#fff;padding:28px 20px;transition:background .2s}
+.dash-c:hover{background:var(--bg1)}
+.dash-lbl{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.22em;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
+.dash-v{font-family:'Barlow Condensed',sans-serif;font-size:2.8rem;font-weight:800;line-height:1;margin-bottom:4px}
+.dash-v .u{font-size:1.2rem;font-weight:400;color:var(--muted2)}
+.dash-d{font-size:.76rem;color:var(--muted2);line-height:1.5}
+.dash-br{height:2px;background:var(--border);margin-top:14px;overflow:hidden}
+.dash-br-f{height:100%;width:0;transition:width 1.2s cubic-bezier(0,0,.2,1)}
+
+/* FEATURES */
+#features{padding:80px 32px;content-visibility:auto}
+.feat-inner{max-width:1100px;margin:0 auto}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:40px;background:var(--border)}
+@media(max-width:700px){.feat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:440px){.feat-grid{grid-template-columns:1fr}}
+.feat-c{background:#fff;padding:28px 24px;border-left:2px solid transparent;transition:all .2s}
+.feat-c:hover{border-left-color:var(--accent);background:var(--bg1)}
+.feat-n{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.18em;color:var(--muted);margin-bottom:10px}
+.feat-t{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.feat-d{font-size:.78rem;color:var(--muted2);line-height:1.6}
+.feat-chip{display:inline-block;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.12em;color:var(--accent);border:1px solid rgba(255,102,0,.3);padding:3px 9px}
+
+/* RGB */
+#rgb-section{background:var(--bg1);border-top:1px solid var(--border);padding:80px 32px;text-align:center;content-visibility:auto}
+.rgb-keys{display:flex;justify-content:center;gap:5px;margin:36px 0;flex-wrap:wrap;max-width:700px;margin-left:auto;margin-right:auto}
+.rgb-k{width:36px;height:36px;background:#e8e8e8;border:1px solid var(--border);position:relative;overflow:hidden;border-radius:3px;cursor:pointer;transition:transform .15s}
+.rgb-k:hover{transform:scale(1.12)}
+@keyframes kc{0%{background:#ff1100}20%{background:#ff6600}40%{background:#ffaa00}60%{background:#cc00ff}80%{background:#ff0066}100%{background:#ff1100}}
+.rgb-k-g{position:absolute;inset:0;opacity:.28;animation:kc 8s linear infinite}
+.rgb-k:nth-child(2) .rgb-k-g{animation-delay:-.5s}.rgb-k:nth-child(3) .rgb-k-g{animation-delay:-1s}.rgb-k:nth-child(4) .rgb-k-g{animation-delay:-1.5s}.rgb-k:nth-child(5) .rgb-k-g{animation-delay:-2s}.rgb-k:nth-child(6) .rgb-k-g{animation-delay:-2.5s}.rgb-k:nth-child(7) .rgb-k-g{animation-delay:-3s}.rgb-k:nth-child(8) .rgb-k-g{animation-delay:-3.5s}.rgb-k:nth-child(9) .rgb-k-g{animation-delay:-4s}.rgb-k:nth-child(10) .rgb-k-g{animation-delay:-4.5s}.rgb-k:nth-child(11) .rgb-k-g{animation-delay:-5s}.rgb-k:nth-child(12) .rgb-k-g{animation-delay:-5.5s}.rgb-k:nth-child(13) .rgb-k-g{animation-delay:-6s}.rgb-k:nth-child(14) .rgb-k-g{animation-delay:-6.5s}
+
+/* CTA */
+#cta{padding:100px 32px;text-align:center;border-top:1px solid var(--border)}
+.cta-p{font-family:'Barlow Condensed',sans-serif;font-size:3rem;font-weight:800;color:var(--accent);margin:1.2rem 0;letter-spacing:-.01em}
+.cta-n{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.1em;color:var(--muted);margin-top:.4rem}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:40px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.foot-b{font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+.foot-ls{display:flex;gap:20px;list-style:none}
+.foot-ls a{font-size:.74rem;color:var(--muted);text-decoration:none;transition:color .2s}
+.foot-ls a:hover{color:var(--text)}
+.foot-c{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:#ccc}
+@media(max-width:600px){footer{flex-direction:column;align-items:flex-start}}
+@media(max-width:600px){.nav-links{display:none}.nav-body{padding:12px 16px}}
 </style>
 </head>
 <body>
-<!-- Loader -->
+
 <div id="loader">
-  <div class="ld-brand">SteelSeries</div>
-  <div class="ld-track"><div class="ld-fill" id="ldf"></div></div>
-  <div class="ld-pct" id="ldp">0%</div>
+  <div class="ld-logo">SteelSeries</div>
+  <div class="ld-bar"><div class="ld-fill" id="ldf"></div></div>
+  <div class="ld-num" id="ldp">0%</div>
 </div>
 
 <div id="prog"></div>
 
-<!-- Nav -->
-<nav id="nav">
-  <div class="nav-in">
-    <a href="#" class="nav-logo">
-      <div class="nav-icon">SS</div>
-      <span class="nav-name">STEELSERIES</span>
-    </a>
+<header id="nav">
+  <div class="nav-rgb"></div>
+  <div class="nav-body">
+  <a href="#" class="nav-logo">
+    <!-- Real SteelSeries wordmark SVG -->
+    <svg class="nav-logo-svg" viewBox="0 0 200 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="SteelSeries">
+      <path d="M0 20C0 9 9 0 20 0h160c11 0 20 9 20 20s-9 20-20 20H20C9 40 0 31 0 20z" fill="#0a0a0a"/>
+      <text x="16" y="26" font-family="Arial,sans-serif" font-weight="800" font-size="14" fill="#ffffff" letter-spacing="0.5">SteelSeries</text>
+    </svg>
+    <div class="nav-prod">Apex Pro Mini</div>
+  </a>
     <ul class="nav-links">
       <li><a href="#chart-section">Actuation</a></li>
       <li><a href="#rt-section">Rapid Trigger</a></li>
       <li><a href="#features">Features</a></li>
-      <li><a href="https://steelseries.com/gaming-keyboards/apex-pro-mini" target="_blank" class="nav-buy">Buy Now</a></li>
     </ul>
+    <a href="https://steelseries.com/gaming-keyboards/apex-pro-mini" target="_blank" class="nav-cta" id="nav-buy">Buy $179.99</a>
   </div>
-</nav>
+</header>
 
-<!-- Hero -->
 <section id="hero">
-  <div class="hero-dots"></div>
-  <div class="hero-line"></div>
-  <div class="hero-tag"><span class="hero-tag-dot"></span> World's Fastest Gaming Keyboard <span class="hero-tag-dot"></span></div>
-  <h1 class="hero-h1">Apex Pro<br><em>Mini</em></h1>
-  <p class="hero-sub">OmniPoint 2.0 HyperMagnetic switches. 20× faster actuation. 40 levels of per-key precision in a 60% form factor.</p>
+  <div class="hero-line-h"></div>
+  <div class="hero-eyebrow">OmniPoint 2.0 HyperMagnetic Switch</div>
+  <div class="hero-tag"><span class="tag-dot"></span>World's Fastest Gaming Keyboard<span class="tag-dot"></span></div>
+  <h1 class="hero-h1">Apex Pro<span>Mini</span></h1>
+  <p class="hero-sub">Zero-contact magnetic actuation. 40 levels of per-key precision. 20× faster than conventional mechanical switches.</p>
   <div class="hero-btns">
     <a href="https://steelseries.com/gaming-keyboards/apex-pro-mini" target="_blank" class="btn-p" id="hero-buy">Buy Now — $179.99</a>
     <a href="#scroll-section" class="btn-s" id="hero-explore">Explore</a>
   </div>
-  <div class="hero-hint"><span class="hint-txt">Scroll to explore</span><div class="hint-bar"></div></div>
+  <div class="hero-hint"><span class="hint-t">Scroll to explore</span><div class="hint-bar"></div></div>
 </section>
 
-<!-- Scroll Video -->
+<!-- SCROLL VIDEO -->
 <section id="scroll-section">
   <div class="scroll-sticky">
-    <video id="svid" muted playsinline preload="auto" src="video/apex-pro.mp4"></video>
-    <div class="vid-grad"></div>
-    <div class="vid-bot"></div>
-    <div class="ann ann1" id="a1" data-s="0.05" data-h="0.3">
-      <div class="ann-inner">
-        <div class="ann-n">01 / SWITCHES</div>
-        <div class="ann-t">OmniPoint 2.0</div>
-        <div class="ann-d">HyperMagnetic sensors. Zero contact. Instant registration.</div>
-        <div class="ann-v">0.1<span style="font-size:.7rem;color:var(--muted2)">mm</span></div>
+    <!-- Annotation cards — z-index above video, positioned over sticky area -->
+    <div class="anns" id="ann-layer">
+      <div class="ann ann1" id="a1" data-s="0.05" data-h="0.30">
+        <div class="ann-card">
+          <div class="ann-n">01 / SWITCHES</div>
+          <div class="ann-t">OmniPoint 2.0</div>
+          <div class="ann-d">HyperMagnetic. Zero contact. Instant registration.</div>
+        </div>
+      </div>
+      <div class="ann ann2" id="a2" data-s="0.28" data-h="0.55">
+        <div class="ann-card">
+          <div class="ann-n">02 / SPEED</div>
+          <div class="ann-t">20× Faster</div>
+          <div class="ann-d">No debounce delay. Fires the moment you press.</div>
+        </div>
       </div>
     </div>
-    <div class="ann ann2" id="a2" data-s="0.28" data-h="0.55">
-      <div class="ann-inner">
-        <div class="ann-n">02 / SPEED</div>
-        <div class="ann-t">20× Faster</div>
-        <div class="ann-d">Versus traditional mechanical keyboards. No debounce delay.</div>
-        <div class="ann-v">0.1<span style="font-size:.7rem;color:var(--muted2)">ms</span></div>
-      </div>
+
+    <!-- Contained video -->
+    <div class="vid-wrap">
+      <video id="svid" muted playsinline preload="auto" src="video/apex-pro.mp4" webkit-playsinline></video>
     </div>
-    <div class="ann ann3" id="a3" data-s="0.53" data-h="0.78">
-      <div class="ann-inner">
-        <div class="ann-n">03 / CONTROL</div>
-        <div class="ann-t">40 Actuation Levels</div>
-        <div class="ann-d">Per-key precision from 0.1mm to 4.0mm.</div>
-        <div class="ann-v">×40</div>
+
+    <!-- Actuation stats below video -->
+    <div class="stat-panel">
+      <div class="stat-block" id="sb0" data-s="0.0" data-h="0.22">
+        <div class="stat-num"><em>0.1</em>mm</div>
+        <div class="stat-info">
+          <div class="stat-title">Minimum Actuation</div>
+          <div class="stat-desc">The lowest actuation point of any gaming keyboard switch.</div>
+          <div class="stat-bar-wrap"><div class="stat-bar" style="--bw:5%"></div></div>
+        </div>
       </div>
-    </div>
-    <div class="ann ann4" id="a4" data-s="0.76" data-h="1.0">
-      <div class="ann-inner">
-        <div class="ann-n">04 / BUILD</div>
-        <div class="ann-t">Aircraft Aluminum</div>
-        <div class="ann-d">Series 5000 alloy. Same grade used in jet construction.</div>
-        <div class="ann-v">60<span style="font-size:.7rem;color:var(--muted2)">%</span></div>
+      <div class="stat-block" id="sb1" data-s="0.22" data-h="0.46">
+        <div class="stat-num"><em>20×</em></div>
+        <div class="stat-info">
+          <div class="stat-title">Faster Actuation Speed</div>
+          <div class="stat-desc">Versus conventional mechanical keyboards. No debounce, no delay.</div>
+          <div class="stat-bar-wrap"><div class="stat-bar" style="--bw:100%"></div></div>
+        </div>
+      </div>
+      <div class="stat-block" id="sb2" data-s="0.46" data-h="0.70">
+        <div class="stat-num"><em>40</em></div>
+        <div class="stat-info">
+          <div class="stat-title">Actuation Levels</div>
+          <div class="stat-desc">Per-key precision from 0.1mm to 4.0mm. Configure each key independently.</div>
+          <div class="stat-bar-wrap"><div class="stat-bar" style="--bw:100%"></div></div>
+        </div>
+      </div>
+      <div class="stat-block" id="sb3" data-s="0.70" data-h="0.95">
+        <div class="stat-num"><em>100M</em>+</div>
+        <div class="stat-info">
+          <div class="stat-title">Keystroke Lifespan</div>
+          <div class="stat-desc">No physical contact means no wear. Built to outlast any mechanical switch.</div>
+          <div class="stat-bar-wrap"><div class="stat-bar" style="--bw:100%"></div></div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Actuation Chart -->
+<!-- ACTUATION RATE SHOWCASE -->
+<section id="actu-showcase">
+  <div class="actu-inner">
+
+    <!-- LEFT: looping key click video + counter -->
+    <div class="actu-vid-col reveal-l" id="actu-vid-col">
+      <div class="actu-vid-wrap">
+        <div class="actu-vid-frame">
+          <video id="kclip" muted autoplay loop playsinline preload="auto" webkit-playsinline>
+            <source src="video/keyclicking.mp4" type="video/mp4"/>
+          </video>
+          <div class="actu-live">
+            <div class="live-dot"></div>
+            <span class="live-txt">Live Input</span>
+          </div>
+        </div>
+      </div>
+      <div class="actu-counter">
+        <div class="actu-cnum" id="actu-cnum">0</div>
+        <div class="actu-clabel">Keystrokes<br>registered</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: data dashboard -->
+    <div class="actu-data-col reveal-r" id="actu-data-col">
+      <div class="actu-header">
+        <div class="s-label">OmniPoint 2.0 — Live Data</div>
+        <h2 class="s-title">Actuation Rate<br><span style="color:var(--accent)">Zero Latency</span></h2>
+        <p class="s-sub">Every key press fires the instant you move. Watch the waveform respond in real time.</p>
+      </div>
+
+      <!-- Waveform meter -->
+      <div class="actu-meter" id="actu-meter">
+        <div class="actu-meter-bg-lines"></div>
+        <div class="actu-wave" id="wave-bars"></div>
+        <div class="actu-line" id="actu-line">
+          <div class="actu-line-label" id="actu-line-lbl">0.8mm</div>
+        </div>
+        <div class="actu-y-0">0mm</div>
+        <div class="actu-y-max">4mm</div>
+        <div class="actu-x-label">Travel depth</div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="actu-kpis" id="actu-kpis">
+        <div class="actu-kpi" id="kpi0">
+          <div class="kpi-val" style="color:var(--accent)">0.1<span style="font-size:1rem;color:var(--muted2)">mm</span></div>
+          <div class="kpi-lbl">Min Actuation</div>
+        </div>
+        <div class="actu-kpi" id="kpi1">
+          <div class="kpi-val">0.1<span style="font-size:1rem;color:var(--muted2)">ms</span></div>
+          <div class="kpi-lbl">Response Time</div>
+        </div>
+        <div class="actu-kpi" id="kpi2">
+          <div class="kpi-val">20<span style="font-size:1rem;color:var(--muted2)">×</span></div>
+          <div class="kpi-lbl">Speed vs Mech</div>
+        </div>
+      </div>
+
+      <!-- Comparison bars -->
+      <div class="actu-compare" id="actu-compare">
+        <div class="cmp-row">
+          <span class="cmp-label">OmniPoint</span>
+          <div class="cmp-track"><div class="cmp-fill" style="background:var(--accent)" data-w="100%"></div></div>
+          <span class="cmp-val" style="color:var(--accent)">0.1ms</span>
+        </div>
+        <div class="cmp-row">
+          <span class="cmp-label">MX Speed</span>
+          <div class="cmp-track"><div class="cmp-fill" style="background:#888" data-w="22%"></div></div>
+          <span class="cmp-val">1.2ms</span>
+        </div>
+        <div class="cmp-row">
+          <span class="cmp-label">MX Red</span>
+          <div class="cmp-track"><div class="cmp-fill" style="background:#666" data-w="16%"></div></div>
+          <span class="cmp-val">2.0ms</span>
+        </div>
+        <div class="cmp-row">
+          <span class="cmp-label">MX Blue</span>
+          <div class="cmp-track"><div class="cmp-fill" style="background:#555" data-w="11%"></div></div>
+          <span class="cmp-val">4.5ms</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ACTUATION CHART -->
 <section id="chart-section">
   <div class="chart-wrap">
-    <div class="chart-header">
+    <div class="chart-top">
       <div>
         <div class="s-label">Switch Technology</div>
         <h2 class="s-title">Actuation Curve<br>Comparison</h2>
-        <p class="s-sub" style="margin-top:.75rem">Real force-travel profiles across switch types. Drag the slider to adjust OmniPoint 2.0 actuation point.</p>
+        <p class="s-sub">Real force-travel data. Drag the slider to set OmniPoint 2.0 actuation point.</p>
       </div>
       <div class="chart-legend">
-        <div class="leg-item"><div class="leg-line" style="background:var(--cyan);box-shadow:0 0 6px var(--cyan)"></div>OmniPoint 2.0</div>
-        <div class="leg-item"><div class="leg-line" style="background:var(--orange)"></div>MX Red (linear)</div>
-        <div class="leg-item"><div class="leg-line" style="background:var(--purple)"></div>MX Blue (clicky)</div>
+        <div class="leg"><div class="leg-l" style="background:var(--accent)"></div>OmniPoint 2.0</div>
+        <div class="leg"><div class="leg-l" style="background:var(--orange)"></div>MX Red</div>
+        <div class="leg"><div class="leg-l" style="background:var(--purple)"></div>MX Blue</div>
       </div>
     </div>
-    <div class="chart-container">
-      <svg id="actuation-svg" viewBox="0 0 800 280" preserveAspectRatio="none"></svg>
-      <div class="chart-controls">
-        <div class="ctrl-group">
-          <span class="ctrl-label">OmniPoint actuation:</span>
-          <input type="range" id="ap-slider" min="1" max="40" value="8" step="1"/>
-          <span id="ap-val" class="ctrl-label">0.8mm</span>
-        </div>
-        <div class="ctrl-group">
-          <span class="ctrl-label" style="color:var(--cyan)">■ Rapid Trigger zone</span>
-          <span class="ctrl-label">adjusts dynamically</span>
-        </div>
+    <div class="chart-box">
+      <svg id="actu-svg" viewBox="0 0 800 260" preserveAspectRatio="none"></svg>
+      <div class="chart-ctrls">
+        <span class="c-label">OmniPoint actuation:</span>
+        <input type="range" id="ap-sl" min="1" max="40" value="8" step="1"/>
+        <span id="ap-v">0.8mm</span>
+        <span class="c-label" style="color:var(--accent);margin-left:8px">+ Rapid Trigger adjusts dynamically</span>
       </div>
-      <div class="chart-note">
-        * Force values are approximate and normalized for comparison. OmniPoint 2.0 maintains consistent actuation regardless of travel depth.
-        MX Blue shows tactile bump at 1.8mm before actuation click at 2.0mm. Traditional reset point is fixed 0.5mm above actuation.
-      </div>
+      <div class="chart-note">* Force values approximate. OmniPoint 2.0 registers at any depth with constant actuation force. MX Blue tactile bump at 1.8mm before click at 2.0mm.</div>
     </div>
   </div>
 </section>
 
-<!-- Rapid Trigger -->
+<!-- RAPID TRIGGER -->
 <section id="rt-section">
-  <div class="s-label">Performance Tech</div>
-  <h2 class="s-title">Rapid Trigger</h2>
-  <p class="s-sub" style="margin-top:.75rem">Eliminate the dead zone. Traditional keyboards have a fixed reset point — Apex Pro Mini's resets instantly.</p>
-  <div class="rt-grid">
-    <div class="rt-card">
-      <button class="rt-animate-btn" onclick="animateRT()">▶ Animate</button>
-      <div class="rt-card-title">Traditional Mechanical</div>
-      <div class="rt-card-sub">Fixed actuation + fixed reset. ~0.5mm dead zone on every keystroke.</div>
-      <div class="rt-viz" id="rt-trad">
-        <div class="rt-track"></div>
-        <div class="rt-act" id="trad-dz" style="left:45%;width:12%;font-size:.55rem">DEAD ZONE</div>
-        <div style="position:absolute;top:50%;left:10%;width:38%;height:28px;background:var(--border2);border-radius:3px;transform:translateY(-50%)" id="trad-key"></div>
-        <div class="rt-line-act" style="left:48%"></div>
-        <div class="rt-line-reset" style="left:57%"></div>
+  <div class="section-pad">
+    <div class="s-label">Performance Technology</div>
+    <h2 class="s-title">Rapid Trigger</h2>
+    <p class="s-sub">Traditional keyboards have a fixed reset point creating a dead zone. Apex Pro Mini eliminates it entirely.</p>
+    <div class="rt-grid">
+      <div class="rt-card">
+        <button class="rt-play" onclick="animateRT()">Play Demo</button>
+        <div class="rt-card-t">Traditional Mechanical</div>
+        <div class="rt-card-s">Fixed actuation + fixed reset. ~0.5mm dead zone every keystroke.</div>
+        <div class="rt-viz" id="rt-trad">
+          <div class="rt-track"></div>
+          <div class="rt-dz" style="left:45%;width:12%">DEAD ZONE</div>
+          <div style="position:absolute;top:50%;left:10%;width:38%;height:22px;background:#ddd;transform:translateY(-50%)" id="trad-key"></div>
+          <div class="rt-lact" style="left:48%"></div>
+          <div class="rt-lrst" style="left:57%"></div>
+        </div>
+        <div class="rt-badge bad">0.5mm fixed dead zone — unavoidable latency</div>
       </div>
-      <div class="rt-badge bad">⚠ 0.5mm fixed dead zone — unavoidable latency</div>
-    </div>
-    <div class="rt-card" style="border-color:rgba(0,229,255,.2)">
-      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)"></div>
-      <div class="rt-card-title">Apex Pro Mini — Rapid Trigger</div>
-      <div class="rt-card-sub">Dynamic actuation + instant reset. Zero dead zone. Every millimeter matters.</div>
-      <div class="rt-viz" id="rt-apex">
-        <div class="rt-track"></div>
-        <div style="position:absolute;top:50%;left:10%;width:38%;height:28px;background:rgba(0,229,255,.15);border:1px solid rgba(0,229,255,.3);border-radius:3px;transform:translateY(-50%)" id="apex-key"></div>
-        <div class="rt-line-act" style="left:48%;background:var(--cyan);box-shadow:0 0 6px var(--cyan)"></div>
-        <div class="rt-line-reset" style="left:48.5%;background:var(--cyan);opacity:.5"></div>
+      <div class="rt-card" style="border-top:2px solid var(--accent)">
+        <div class="rt-card-t">Apex Pro Mini — Rapid Trigger</div>
+        <div class="rt-card-s">Dynamic actuation + instant reset. Zero dead zone. Every mm registered.</div>
+        <div class="rt-viz" id="rt-apex">
+          <div class="rt-track"></div>
+          <div style="position:absolute;top:50%;left:10%;width:38%;height:22px;background:rgba(255,102,0,.15);border:1px solid rgba(255,102,0,.4);transform:translateY(-50%)" id="apex-key"></div>
+          <div class="rt-lact" style="left:48%;background:var(--accent)"></div>
+          <div class="rt-lrst" style="left:48.5%;background:rgba(255,102,0,.4)"></div>
+        </div>
+        <div class="rt-badge good">Dynamic reset — ~0mm dead zone</div>
       </div>
-      <div class="rt-badge good">✓ Dynamic reset — ~0mm dead zone</div>
     </div>
   </div>
 </section>
 
-<!-- Dashboard Stats -->
+<!-- DASHBOARD -->
 <section id="dashboard">
   <div class="dash-inner">
     <div class="s-label">Performance Data</div>
     <h2 class="s-title">By the Numbers</h2>
-    <div class="dash-grid" id="dash-grid">
-      <div class="dash-card" data-target="20" data-max="20" data-color="#00e5ff">
-        <div class="dash-label">Actuation Speed</div>
-        <div class="dash-val"><span class="cnt">0</span><span class="unit">×</span></div>
-        <div class="dash-desc">Faster than conventional mechanical keyboards</div>
-        <div class="dash-bar"><div class="dash-bar-fill" style="background:var(--cyan)"></div></div>
-      </div>
-      <div class="dash-card" data-target="11" data-max="11" data-color="#ff5722">
-        <div class="dash-label">Response Time</div>
-        <div class="dash-val"><span class="cnt">0</span><span class="unit">×</span></div>
-        <div class="dash-desc">Faster response vs traditional actuation</div>
-        <div class="dash-bar"><div class="dash-bar-fill" style="background:var(--orange)"></div></div>
-      </div>
-      <div class="dash-card" data-target="40" data-max="40" data-color="#7c3aed">
-        <div class="dash-label">Actuation Levels</div>
-        <div class="dash-val"><span class="cnt">0</span><span class="unit"> pts</span></div>
-        <div class="dash-desc">Per-key adjustment precision (0.1–4.0mm)</div>
-        <div class="dash-bar"><div class="dash-bar-fill" style="background:var(--purple)"></div></div>
-      </div>
-      <div class="dash-card" data-target="100" data-max="100" data-color="#00ff88">
-        <div class="dash-label">Durability</div>
-        <div class="dash-val"><span class="cnt">0</span><span class="unit">M+</span></div>
-        <div class="dash-desc">Keystroke lifespan. No contact = no wear.</div>
-        <div class="dash-bar"><div class="dash-bar-fill" style="background:#00ff88"></div></div>
-      </div>
+    <div class="dash-grid">
+      <div class="dash-c" data-t="20" data-m="20"><div class="dash-lbl">Actuation Speed</div><div class="dash-v"><span class="cnt">0</span><span class="u">×</span></div><div class="dash-d">Faster than conventional mechanical</div><div class="dash-br"><div class="dash-br-f" style="background:var(--accent)"></div></div></div>
+      <div class="dash-c" data-t="11" data-m="11"><div class="dash-lbl">Response Time</div><div class="dash-v"><span class="cnt">0</span><span class="u">×</span></div><div class="dash-d">Faster response vs traditional actuation</div><div class="dash-br"><div class="dash-br-f" style="background:#ff3300"></div></div></div>
+      <div class="dash-c" data-t="40" data-m="40"><div class="dash-lbl">Actuation Levels</div><div class="dash-v"><span class="cnt">0</span><span class="u"> pts</span></div><div class="dash-d">Per-key precision from 0.1–4.0mm</div><div class="dash-br"><div class="dash-br-f" style="background:var(--purple)"></div></div></div>
+      <div class="dash-c" data-t="100" data-m="100"><div class="dash-lbl">Durability</div><div class="dash-v"><span class="cnt">0</span><span class="u">M+</span></div><div class="dash-d">Keystroke lifespan. No contact = no wear</div><div class="dash-br"><div class="dash-br-f" style="background:#cc00ff"></div></div></div>
     </div>
   </div>
 </section>
 
-<!-- Features -->
+<!-- FEATURES -->
 <section id="features">
-  <div class="s-label">What's Inside</div>
-  <h2 class="s-title">Every Detail Engineered</h2>
-  <div class="feat-grid" style="margin-top:48px">
-    <div class="feat-card"><span class="feat-icon">⚡</span><div class="feat-name">Rapid Trigger</div><div class="feat-desc">Keys activate and deactivate based on directional movement, not fixed points. Eliminates input latency at the hardware level.</div><span class="feat-chip">ZERO DEAD ZONE</span></div>
-    <div class="feat-card"><span class="feat-icon">🎮</span><div class="feat-name">2-in-1 Action Keys</div><div class="feat-desc">One key, two actions. Light press walks, deep press sprints. Program any key with dual-depth inputs via SteelSeries GG.</div><span class="feat-chip">DUAL DEPTH INPUT</span></div>
-    <div class="feat-card"><span class="feat-icon">🔧</span><div class="feat-name">Per-Key Actuation</div><div class="feat-desc">40 levels from 0.1mm to 4.0mm per individual key. WASD set to feather-light, ability keys set deep — or any configuration you choose.</div><span class="feat-chip">PER-KEY CONTROL</span></div>
-    <div class="feat-card"><span class="feat-icon">🌈</span><div class="feat-name">Per-Key RGB</div><div class="feat-desc">16.8M colors per key. Prism Connect reactive lighting syncs with your game. Program effects, profiles, and reactive patterns.</div><span class="feat-chip">16.8M COLORS</span></div>
-    <div class="feat-card"><span class="feat-icon">🏗️</span><div class="feat-name">Aircraft Aluminum</div><div class="feat-desc">Series 5000 alloy top plate — identical to aerospace-grade aluminum used in jet manufacturing. Built to last a lifetime.</div><span class="feat-chip">SERIES 5000 ALLOY</span></div>
-    <div class="feat-card"><span class="feat-icon">🔌</span><div class="feat-name">Detachable USB-C</div><div class="feat-desc">Braided detachable cable with USB-A passthrough. Clean desk, clean setup — no fumbling behind your PC ever again.</div><span class="feat-chip">BRAIDED CABLE</span></div>
+  <div class="feat-inner">
+    <div class="s-label">What's Inside</div>
+    <h2 class="s-title">Every Detail Engineered</h2>
+    <div class="feat-grid">
+      <div class="feat-c"><div class="feat-n">01</div><div class="feat-t">Rapid Trigger</div><div class="feat-d">Keys activate and deactivate based on directional movement. Eliminates latency at the hardware level.</div><span class="feat-chip">ZERO DEAD ZONE</span></div>
+      <div class="feat-c"><div class="feat-n">02</div><div class="feat-t">2-in-1 Action Keys</div><div class="feat-d">One key, two actions. Light press walks, deep press sprints. Program any key with dual-depth inputs.</div><span class="feat-chip">DUAL DEPTH INPUT</span></div>
+      <div class="feat-c"><div class="feat-n">03</div><div class="feat-t">Per-Key Actuation</div><div class="feat-d">40 levels per individual key. WASD feather-light, ability keys set deep — configure every single key.</div><span class="feat-chip">PER-KEY CONTROL</span></div>
+      <div class="feat-c"><div class="feat-n">04</div><div class="feat-t">Per-Key RGB</div><div class="feat-d">16.8M colors per key. Prism Connect syncs lighting reactively with 300+ games via SteelSeries GG.</div><span class="feat-chip">16.8M COLORS</span></div>
+      <div class="feat-c"><div class="feat-n">05</div><div class="feat-t">Aircraft Aluminum</div><div class="feat-d">Series 5000 alloy top plate — aerospace-grade aluminum identical to jet manufacturing standards.</div><span class="feat-chip">SERIES 5000 ALLOY</span></div>
+      <div class="feat-c"><div class="feat-n">06</div><div class="feat-t">Detachable USB-C</div><div class="feat-d">Braided detachable cable with USB-A passthrough. Unplug and carry in seconds.</div><span class="feat-chip">BRAIDED CABLE</span></div>
+    </div>
   </div>
 </section>
 
 <!-- RGB -->
 <section id="rgb-section">
-  <div class="rgb-inner">
-    <div class="s-label">Per-Key RGB</div>
-    <h2 class="s-title">Prism Connect<br>Reactive Lighting</h2>
-    <p class="s-sub" style="margin:1rem auto 0">Sync your lighting with 300+ games. Create custom effects, reactive profiles, and color shifts per individual key.</p>
-    <div class="rgb-keys">
-      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
-      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
-      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
-      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
-      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
-      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
-      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
-      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
-      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
-      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
-      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
-      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
-      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
-      <div class="rgb-key"><div class="rgb-key-glow"></div></div>
-    </div>
+  <div class="s-label">Per-Key RGB</div>
+  <h2 class="s-title">Prism Connect Reactive Lighting</h2>
+  <p class="s-sub" style="margin:1rem auto 0;max-width:440px">Sync with 300+ games. Full per-key color control and reactive lighting from SteelSeries GG.</p>
+  <div class="rgb-keys">
+    <div class="rgb-k"><div class="rgb-k-g"></div></div><div class="rgb-k"><div class="rgb-k-g"></div></div><div class="rgb-k"><div class="rgb-k-g"></div></div><div class="rgb-k"><div class="rgb-k-g"></div></div><div class="rgb-k"><div class="rgb-k-g"></div></div><div class="rgb-k"><div class="rgb-k-g"></div></div><div class="rgb-k"><div class="rgb-k-g"></div></div><div class="rgb-k"><div class="rgb-k-g"></div></div><div class="rgb-k"><div class="rgb-k-g"></div></div><div class="rgb-k"><div class="rgb-k-g"></div></div><div class="rgb-k"><div class="rgb-k-g"></div></div><div class="rgb-k"><div class="rgb-k-g"></div></div><div class="rgb-k"><div class="rgb-k-g"></div></div><div class="rgb-k"><div class="rgb-k-g"></div></div>
   </div>
 </section>
 
 <!-- CTA -->
 <section id="cta">
-  <div class="s-label">Ready</div>
-  <h2 class="s-title" style="max-width:600px;margin:0 auto">The Most Advanced<br>Keyboard Ever Built</h2>
-  <div class="cta-price">$179.99</div>
-  <div class="cta-note">Free shipping · 2-year warranty · SteelSeries GG software included</div>
+  <div class="s-label">Ready to Order</div>
+  <h2 class="s-title" style="max-width:560px;margin:0 auto">The Most Advanced Keyboard Ever Built</h2>
+  <div class="cta-p">$179.99</div>
+  <div class="cta-n">Free shipping · 2-year warranty · SteelSeries GG included</div>
   <div class="hero-btns" style="margin-top:2rem">
     <a href="https://steelseries.com/gaming-keyboards/apex-pro-mini" target="_blank" class="btn-p" id="cta-buy">Order Now</a>
     <a href="https://steelseries.com/gg" target="_blank" class="btn-s" id="cta-gg">Get SteelSeries GG</a>
@@ -438,178 +790,243 @@ footer{border-top:1px solid var(--border);padding:48px 40px;display:flex;align-i
 </section>
 
 <footer>
-  <div class="foot-brand">STEELSERIES</div>
-  <ul class="foot-links">
+  <div class="foot-b">SteelSeries</div>
+  <ul class="foot-ls">
     <li><a href="https://steelseries.com/gaming-keyboards" target="_blank">Keyboards</a></li>
     <li><a href="https://support.steelseries.com" target="_blank">Support</a></li>
     <li><a href="https://steelseries.com/gg" target="_blank">Software</a></li>
   </ul>
-  <div class="foot-copy">© 2024 SteelSeries ApS. All rights reserved.</div>
+  <div class="foot-c">© 2024 SteelSeries ApS. All rights reserved.</div>
 </footer>
 
 <script>
-// ─── LOADER ───────────────────────────────────────────
+// LOADER
 const loader=document.getElementById('loader'),ldf=document.getElementById('ldf'),ldp=document.getElementById('ldp');
-let lp=0;
-const li=setInterval(()=>{
-  lp+=Math.random()*12+4;if(lp>100)lp=100;
-  ldf.style.width=lp+'%';ldp.textContent=Math.floor(lp)+'%';
-  if(lp>=100){clearInterval(li);setTimeout(()=>loader.classList.add('gone'),300);}
-},100);
+let lp=0;const li=setInterval(()=>{lp+=Math.random()*10+5;if(lp>100)lp=100;ldf.style.width=lp+'%';ldp.textContent=Math.floor(lp)+'%';if(lp>=100){clearInterval(li);setTimeout(()=>loader.classList.add('gone'),350);}},90);
 
-// ─── SMOOTH VIDEO SCRUB (LERP) ─────────────────────────
+// ── VIDEO SCRUB (optimized fastSeek + isSeeking lock) ──
 const vid=document.getElementById('svid');
 const sec=document.getElementById('scroll-section');
-const anns=document.querySelectorAll('.ann');
-let targetT=0,smoothT=0,lastSY=0,rafQ=false;
+const anns=[...document.querySelectorAll('.ann')];
+const stats=[...document.querySelectorAll('.stat-block')];
+let targetT=0,smoothT=0,lastSY=0,videoReady=false,isSeeking=false;
 
 function lerp(a,b,t){return a+(b-a)*t;}
 
+// Pre-decode: play one frame then pause to warm up decoder
+vid.addEventListener('canplaythrough',()=>{
+  videoReady=true;
+  vid.play().then(()=>{vid.pause();vid.currentTime=0;}).catch(()=>{});
+},{once:true});
+vid.addEventListener('seeked',()=>{isSeeking=false;});
+vid.load();
+
+let raf_id;
 function scrubRAF(){
-  smoothT=lerp(smoothT,targetT,0.09);
-  if(vid.readyState>=2&&vid.duration){
+  if(videoReady&&!isSeeking){
+    const prev=smoothT;
+    smoothT=lerp(smoothT,targetT,0.06);
     const diff=Math.abs(smoothT-vid.currentTime);
-    if(diff>0.008)vid.currentTime=smoothT;
+    if(diff>0.006&&vid.readyState>=2){
+      isSeeking=true;
+      // fastSeek seeks to nearest keyframe — 3-5x faster than exact seek
+      if(vid.fastSeek)vid.fastSeek(smoothT);
+      else vid.currentTime=smoothT;
+    }
   }
-  // annotations
-  const secTop=sec.offsetTop,secH=sec.offsetHeight-window.innerHeight;
-  const prog=secH>0?Math.max(0,Math.min(1,(lastSY-secTop)/secH)):0;
-  anns.forEach(a=>{
-    const s=parseFloat(a.dataset.s),h=parseFloat(a.dataset.h);
-    a.classList.toggle('on',prog>=s&&prog<h);
-  });
-  requestAnimationFrame(scrubRAF);
+  // Annotations & stats visibility
+  const sT=sec.offsetTop,sH=sec.offsetHeight-window.innerHeight;
+  const p=sH>0?Math.max(0,Math.min(1,(lastSY-sT)/sH)):0;
+  anns.forEach(a=>{const s=+a.dataset.s,h=+a.dataset.h;a.classList.toggle('on',p>=s&&p<h);});
+  stats.forEach(b=>{const s=+b.dataset.s,h=+b.dataset.h;b.classList.toggle('on',p>=s&&p<h);});
+  raf_id=requestAnimationFrame(scrubRAF);
 }
 scrubRAF();
 
-// ─── SCROLL HANDLER ────────────────────────────────────
-const prog=document.getElementById('prog'),nav=document.getElementById('nav');
+// SCROLL — passive, no work done here beyond updating state
+const progEl=document.getElementById('prog'),nav=document.getElementById('nav');
+let ticking=false;
 window.addEventListener('scroll',()=>{
   lastSY=window.scrollY;
-  const dh=document.documentElement.scrollHeight-window.innerHeight;
-  prog.style.width=(lastSY/dh*100)+'%';
-  nav.classList.toggle('scrolled',lastSY>60);
-  const secTop=sec.offsetTop,secH=sec.offsetHeight-window.innerHeight;
-  if(secH>0&&lastSY>=secTop)targetT=Math.max(0,Math.min(1,(lastSY-secTop)/secH))*(vid.duration||1);
-  else if(lastSY<secTop)targetT=0;
+  if(!ticking){
+    ticking=true;
+    requestAnimationFrame(()=>{
+      const dh=document.documentElement.scrollHeight-window.innerHeight;
+      progEl.style.width=(lastSY/dh*100)+'%';
+      nav.classList.toggle('scrolled',lastSY>50);
+      const sT=sec.offsetTop,sH=sec.offsetHeight-window.innerHeight;
+      if(sH>0&&lastSY>=sT)targetT=Math.max(0,Math.min(1,(lastSY-sT)/sH))*(vid.duration||1);
+      else if(lastSY<sT)targetT=0;
+      ticking=false;
+    });
+  }
 },{passive:true});
 
-// ─── ACTUATION CHART ───────────────────────────────────
-const SVG_W=800,SVG_H=280,PAD={l:48,r:20,t:20,b:40};
-const CW=SVG_W-PAD.l-PAD.r,CH=SVG_H-PAD.t-PAD.b;
-const MAX_TRAVEL=4.0,MAX_FORCE=90;
+// CHART
+const SVG_W=800,SVG_H=260,P={l:44,r:16,t:18,b:38};
+const CW=SVG_W-P.l-P.r,CH=SVG_H-P.t-P.b;
+const MT=4.0,MF=90;
+const tx=mm=>P.l+(mm/MT)*CW;
+const ty=f=>P.t+CH-(f/MF)*CH;
+const OP=[[0,44],[0.5,44],[1,44],[1.5,44],[2,44],[2.5,44],[3,44],[3.5,44],[4,45]];
+const MR=[[0,30],[0.5,33],[1,36],[1.5,40],[2,45],[2.5,52],[3,60],[3.5,68],[4,75]];
+const MB=[[0,28],[0.5,32],[1,37],[1.5,42],[1.8,58],[2,52],[2.5,57],[3,63],[3.5,70],[4,77]];
+const p2l=pts=>pts.map((p,i)=>`${i?'L':'M'}${tx(p[0]).toFixed(1)},${ty(p[1]).toFixed(1)}`).join(' ');
+const p2p=pts=>p2l(pts)+` L${tx(4)},${ty(0)}L${tx(0)},${P.t+CH}Z`;
 
-function tx(mm){return PAD.l+(mm/MAX_TRAVEL)*CW;}
-function ty(f){return PAD.t+CH-(f/MAX_FORCE)*CH;}
-
-// Switch data [travel_mm, force_g]
-const OP_pts=[[0,44],[0.5,44],[1,44],[1.5,44],[2,44],[2.5,44],[3,44],[3.5,44],[4,45]];
-const MXR_pts=[[0,30],[0.5,33],[1,36],[1.5,40],[2,45],[2.5,52],[3,60],[3.5,68],[4,75]];
-const MXB_pts=[[0,28],[0.5,32],[1,37],[1.5,42],[1.8,58],[2,52],[2.5,57],[3,63],[3.5,70],[4,77]];
-
-function pts2path(pts){return pts.map((p,i)=>`${i?'L':'M'}${tx(p[0]).toFixed(1)},${ty(p[1]).toFixed(1)}`).join(' ')+' L'+tx(4)+','+ty(0)+'L'+tx(0)+','+(PAD.t+CH)+'Z';}
-function pts2line(pts){return pts.map((p,i)=>`${i?'L':'M'}${tx(p[0]).toFixed(1)},${ty(p[1]).toFixed(1)}`).join(' ');}
-
-function makeChart(apMM){
-  const svg=document.getElementById('actuation-svg');
-  let html='';
-
-  // Grid
-  for(let i=0;i<=4;i++){const x=tx(i);html+=`<line x1="${x}" y1="${PAD.t}" x2="${x}" y2="${PAD.t+CH}" stroke="#1e1e24" stroke-width="1"/><text x="${x}" y="${SVG_H-6}" text-anchor="middle" font-size="9" fill="#5a5a6e" font-family="JetBrains Mono,monospace">${i}.0</text>`;}
-  for(let i=0;i<=MAX_FORCE;i+=20){const y=ty(i);html+=`<line x1="${PAD.l}" y1="${y}" x2="${PAD.l+CW}" y2="${y}" stroke="#1e1e24" stroke-width="1"/><text x="${PAD.l-6}" y="${y+3}" text-anchor="end" font-size="9" fill="#5a5a6e" font-family="JetBrains Mono,monospace">${i}g</text>`;}
-  html+=`<text x="${PAD.l+CW/2}" y="${SVG_H}" text-anchor="middle" font-size="9" fill="#5a5a6e" font-family="JetBrains Mono,monospace">Key Travel (mm)</text>`;
-
-  // MX Blue fill
-  html+=`<path d="${pts2path(MXB_pts)}" fill="${'#7c3aed'}11" stroke="none"/>`;
-  // MX Red fill
-  html+=`<path d="${pts2path(MXR_pts)}" fill="${'#ff5722'}0a" stroke="none"/>`;
-
-  // Lines
-  const opLine=pts2line(OP_pts);
-  const mxrLine=pts2line(MXR_pts);
-  const mxbLine=pts2line(MXB_pts);
-
-  html+=`<path d="${mxbLine}" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity=".85"/>`;
-  html+=`<path d="${mxrLine}" fill="none" stroke="#ff5722" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity=".85"/>`;
-  html+=`<path d="${opLine}" fill="none" stroke="#00e5ff" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" filter="url(#glow)"/>`;
-
-  // Dead zones: MX Red reset at 1.5mm (0.5mm before 2mm actuation)
-  const dzX=tx(1.5),actX=tx(2.0);
-  html+=`<rect x="${dzX}" y="${PAD.t}" width="${actX-dzX}" height="${CH}" fill="rgba(255,87,34,0.08)" rx="2"/>`;
-  html+=`<text x="${(dzX+actX)/2}" y="${PAD.t+14}" text-anchor="middle" font-size="8" fill="#ff5722" font-family="JetBrains Mono,monospace" opacity=".7">dead zone</text>`;
-
-  // Actuation markers
-  html+=`<line x1="${actX}" y1="${PAD.t}" x2="${actX}" y2="${PAD.t+CH}" stroke="#ff5722" stroke-width="1" stroke-dasharray="4,3" opacity=".6"/>`;
-  html+=`<line x1="${tx(1.8)}" y1="${PAD.t}" x2="${tx(1.8)}" y2="${PAD.t+CH}" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3" opacity=".5"/>`;
-
-  // OmniPoint actuation marker (adjustable)
-  const apX=tx(apMM);
-  html+=`<line x1="${apX}" y1="${PAD.t}" x2="${apX}" y2="${PAD.t+CH}" stroke="#00e5ff" stroke-width="1.5" stroke-dasharray="5,3"/>`;
-  html+=`<rect x="${apX-1}" y="${PAD.t}" width="${CW-(apX-PAD.l)}" height="${CH}" fill="rgba(0,229,255,0.05)" rx="2"/>`;
-  html+=`<text x="${apX+4}" y="${PAD.t+14}" font-size="8" fill="#00e5ff" font-family="JetBrains Mono,monospace">▲ AP ${apMM.toFixed(1)}mm</text>`;
-
-  // Glow filter
-  html=`<defs><filter id="glow"><feGaussianBlur in="SourceGraphic" stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`+html;
-
-  // Axes
-  html+=`<line x1="${PAD.l}" y1="${PAD.t}" x2="${PAD.l}" y2="${PAD.t+CH}" stroke="#2a2a34" stroke-width="1.5"/>`;
-  html+=`<line x1="${PAD.l}" y1="${PAD.t+CH}" x2="${PAD.l+CW}" y2="${PAD.t+CH}" stroke="#2a2a34" stroke-width="1.5"/>`;
-
-  svg.innerHTML=html;
+function makeChart(ap){
+  const svg=document.getElementById('actu-svg');let h='';
+  for(let i=0;i<=4;i++){const x=tx(i);h+=`<line x1="${x}" y1="${P.t}" x2="${x}" y2="${P.t+CH}" stroke="#e8e8e8" stroke-width="1"/><text x="${x}" y="${SVG_H-5}" text-anchor="middle" font-size="9" fill="#aaa" font-family="JetBrains Mono,monospace">${i}.0</text>`;}
+  for(let i=0;i<=MF;i+=20){const y=ty(i);h+=`<line x1="${P.l}" y1="${y}" x2="${P.l+CW}" y2="${y}" stroke="#e8e8e8" stroke-width="1"/><text x="${P.l-5}" y="${y+3}" text-anchor="end" font-size="9" fill="#aaa" font-family="JetBrains Mono,monospace">${i}g</text>`;}
+  h+=`<text x="${P.l+CW/2}" y="${SVG_H}" text-anchor="middle" font-size="9" fill="#aaa" font-family="JetBrains Mono,monospace">Key Travel (mm)</text>`;
+  h+=`<path d="${p2p(MB)}" fill="#7c3aed0d" stroke="none"/><path d="${p2p(MR)}" fill="#ff57220a" stroke="none"/>`;
+  h+=`<path d="${p2l(MB)}" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>`;
+  h+=`<path d="${p2l(MR)}" fill="none" stroke="#ff5722" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>`;
+  h+=`<path d="${p2l(OP)}" fill="none" stroke="#ff6600" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#g)"/>`;
+  const dz=tx(1.5),ax=tx(2.0),apx=tx(ap);
+  h+=`<rect x="${dz}" y="${P.t}" width="${ax-dz}" height="${CH}" fill="rgba(255,87,34,.06)"/>`;
+  h+=`<text x="${(dz+ax)/2}" y="${P.t+13}" text-anchor="middle" font-size="7.5" fill="#ff5722" font-family="JetBrains Mono,monospace" opacity=".7">dead zone</text>`;
+  h+=`<line x1="${ax}" y1="${P.t}" x2="${ax}" y2="${P.t+CH}" stroke="#ff5722" stroke-width="1" stroke-dasharray="4,3" opacity=".5"/>`;
+  h+=`<line x1="${tx(1.8)}" y1="${P.t}" x2="${tx(1.8)}" y2="${P.t+CH}" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3" opacity=".4"/>`;
+  h+=`<line x1="${apx}" y1="${P.t}" x2="${apx}" y2="${P.t+CH}" stroke="#ff6600" stroke-width="1.5" stroke-dasharray="5,3"/>`;
+  h+=`<rect x="${apx}" y="${P.t}" width="${P.l+CW-apx}" height="${CH}" fill="rgba(255,102,0,.04)"/>`;
+  h+=`<text x="${apx+4}" y="${P.t+13}" font-size="7.5" fill="#ff6600" font-family="JetBrains Mono,monospace">AP ${ap.toFixed(1)}mm</text>`;
+  h=`<defs><filter id="g"><feGaussianBlur in="SourceGraphic" stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`+h;
+  h+=`<line x1="${P.l}" y1="${P.t}" x2="${P.l}" y2="${P.t+CH}" stroke="#ccc" stroke-width="1.5"/>`;
+  h+=`<line x1="${P.l}" y1="${P.t+CH}" x2="${P.l+CW}" y2="${P.t+CH}" stroke="#ccc" stroke-width="1.5"/>`;
+  svg.innerHTML=h;
 }
-
-const slider=document.getElementById('ap-slider'),apVal=document.getElementById('ap-val');
-slider.addEventListener('input',()=>{
-  const v=parseInt(slider.value)/10;
-  apVal.textContent=v.toFixed(1)+'mm';
-  makeChart(v);
-});
+const apSl=document.getElementById('ap-sl'),apV=document.getElementById('ap-v');
+apSl.addEventListener('input',()=>{const v=+apSl.value/10;apV.textContent=v.toFixed(1)+'mm';makeChart(v);});
 makeChart(0.8);
 
-// ─── RAPID TRIGGER ANIMATION ───────────────────────────
-let rtPlaying=false;
+// RT ANIMATION
+let rtBusy=false;
 function animateRT(){
-  if(rtPlaying)return;rtPlaying=true;
-  const tradKey=document.getElementById('trad-key');
-  const apexKey=document.getElementById('apex-key');
-  const frames=[
-    ()=>{tradKey.style.left='50%';apexKey.style.left='50%';},
-    ()=>{tradKey.style.left='30%';apexKey.style.left='30%';},
-    ()=>{tradKey.style.left='10%';apexKey.style.left='10%';},
-    ()=>{tradKey.style.left='20%';apexKey.style.left='11%';},
-    ()=>{tradKey.style.left='10%';apexKey.style.left='10%';},
-    ()=>{tradKey.style.left='50%';apexKey.style.left='50%';rtPlaying=false;},
+  if(rtBusy)return;rtBusy=true;
+  const tk=document.getElementById('trad-key'),ak=document.getElementById('apex-key');
+  const f=[
+    ()=>{tk.style.left='50%';ak.style.left='50%';},
+    ()=>{tk.style.left='28%';ak.style.left='28%';},
+    ()=>{tk.style.left='10%';ak.style.left='10%';},
+    ()=>{tk.style.left='22%';ak.style.left='11%';},
+    ()=>{tk.style.left='10%';ak.style.left='10%';},
+    ()=>{tk.style.left='50%';ak.style.left='50%';rtBusy=false;},
   ];
-  frames.forEach((f,i)=>setTimeout(f,i*700));
+  f.forEach((fn,i)=>setTimeout(fn,i*700));
 }
 
-// ─── COUNT UP ─────────────────────────────────────────
+// COUNT UP
 function easeOut(t){return 1-Math.pow(2,-10*t);}
-function countUp(el,target,duration=1600){
-  const start=performance.now();
-  (function step(now){
-    const t=Math.min((now-start)/duration,1);
-    el.textContent=Math.floor(easeOut(t)*target);
-    if(t<1)requestAnimationFrame(step);else el.textContent=target;
-  })(start);
+function countUp(el,tgt,dur=1400){
+  const s=performance.now();
+  (function step(now){const t=Math.min((now-s)/dur,1);el.textContent=Math.floor(easeOut(t)*tgt);if(t<1)requestAnimationFrame(step);else el.textContent=tgt;})(s);
 }
-
-const dashCards=document.querySelectorAll('.dash-card');
 const io=new IntersectionObserver(entries=>{
   entries.forEach((e,i)=>{
     if(e.isIntersecting){
-      const card=e.target,target=+card.dataset.target,max=+card.dataset.max;
-      const cntEl=card.querySelector('.cnt');
-      const barEl=card.querySelector('.dash-bar-fill');
-      setTimeout(()=>{
-        countUp(cntEl,target);
-        barEl.style.width=((target/max)*100)+'%';
-      },i*150);
-      io.unobserve(card);
+      const c=e.target,t=+c.dataset.t,m=+c.dataset.m;
+      setTimeout(()=>{countUp(c.querySelector('.cnt'),t);c.querySelector('.dash-br-f').style.width=((t/m)*100)+'%';},i*100);
+      io.unobserve(c);
     }
   });
-},{threshold:.4});
-dashCards.forEach(c=>io.observe(c));
+},{threshold:.3});
+document.querySelectorAll('.dash-c').forEach(c=>io.observe(c));
+
+// ── ACTUATION SHOWCASE ────────────────────────────────
+(function(){
+  // Build waveform bars
+  const waveCont=document.getElementById('wave-bars');
+  const BAR_COUNT=32;
+  const colors=['#ff6600','#ff5500','#ff7700','#ff4400','#ff8800'];
+  for(let i=0;i<BAR_COUNT;i++){
+    const b=document.createElement('div');
+    b.className='wave-bar';
+    const minH=(Math.random()*.12+.04).toFixed(2);
+    const maxH=(Math.random()*.55+.35).toFixed(2);
+    const delay=(Math.random()*1.1).toFixed(2);
+    const dur=(Math.random()*.8+0.9).toFixed(2);
+    b.style.cssText=`--min:${minH};--max:${maxH};background:${colors[i%colors.length]};animation-delay:${delay}s;animation-duration:${dur}s`;
+    waveCont.appendChild(b);
+  }
+
+  // Keystroke counter — synced to video looping
+  const cnum=document.getElementById('actu-cnum');
+  const kclip=document.getElementById('kclip');
+  let ksCount=0,ksActive=false;
+  // Increment counter every ~120ms when video is in view (simulates key presses)
+  let ksInterval=null;
+  function startCounter(){
+    if(ksInterval)return;
+    ksInterval=setInterval(()=>{
+      ksCount+=Math.floor(Math.random()*2)+1;
+      cnum.textContent=ksCount.toLocaleString();
+      // Flash the border
+      cnum.parentElement.style.borderLeftColor='#ff3300';
+      setTimeout(()=>{cnum.parentElement.style.borderLeftColor='var(--accent)';},80);
+    },130);
+  }
+  function stopCounter(){clearInterval(ksInterval);ksInterval=null;}
+
+  // Actuation line oscillation — moves smoothly up/down in the meter
+  const actuLine=document.getElementById('actu-line');
+  const actuLineLbl=document.getElementById('actu-line-lbl');
+  let lineAnim=null;
+  const DEPTHS=[0.1,0.2,0.3,0.4,0.5,0.6,0.8,1.0,1.2,1.5,2.0,0.3,0.1];
+  let depthIdx=0;
+  function animateLine(){
+    lineAnim=setInterval(()=>{
+      depthIdx=(depthIdx+1)%DEPTHS.length;
+      const d=DEPTHS[depthIdx];
+      const pct=(d/4.0)*100; // 0-100% of 4mm range
+      actuLine.style.top=(100-pct)+'%';
+      actuLineLbl.textContent=d.toFixed(1)+'mm';
+    },420);
+  }
+
+  // KPI cycling animation
+  const kpis=document.querySelectorAll('.actu-kpi');
+  let kpiIdx=0,kpiTimer=null;
+  function cycleKpis(){
+    kpiTimer=setInterval(()=>{
+      kpis.forEach(k=>k.classList.remove('active'));
+      kpis[kpiIdx%kpis.length].classList.add('active');
+      kpiIdx++;
+    },1800);
+  }
+
+  // Comparison bars — animate in on intersect
+  const cmpFills=document.querySelectorAll('.cmp-fill');
+
+  // Reveal animations + start everything on intersect
+  const revealEls=document.querySelectorAll('.reveal,.reveal-l,.reveal-r');
+  const showcaseObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        // Start showcase interactions once section is visible
+        if(e.target.id==='actu-vid-col'||e.target.id==='actu-data-col'){
+          ksActive=true;
+          startCounter();
+          animateLine();
+          cycleKpis();
+          // Animate comparison bars
+          cmpFills.forEach((f,i)=>{
+            setTimeout(()=>{ f.style.width=f.dataset.w; },i*180+300);
+          });
+          // KPI 0 active first
+          setTimeout(()=>kpis[0].classList.add('active'),600);
+        }
+      } else if(!e.isIntersecting&&ksActive){
+        stopCounter();
+        clearInterval(lineAnim);
+        clearInterval(kpiTimer);
+        ksActive=false;
+      }
+    });
+  },{threshold:.2});
+  revealEls.forEach(el=>showcaseObs.observe(el));
+})();
 </script>
 </body>
 </html>
